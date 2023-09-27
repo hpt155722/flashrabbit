@@ -1,3 +1,5 @@
+const fs = require('fs'); 
+
 function onload() {
     //START ANIMATIONS
     document.getElementById('cloud1').classList.add('slide-left');
@@ -8,8 +10,7 @@ function onload() {
 
     //HIDE MAIN APP
     document.getElementById('header').style.display = 'none';
-    document.querySelector('.editSetAlertContainer').style.display = 'none';
-    document.querySelector('.addSetAlertContainer').style.display = 'none';
+    document.querySelector('.entireAlertContainer').style.display = 'none';
     document.getElementById('allSetsContainerContainer').style.display = 'none';
 }
 
@@ -84,7 +85,7 @@ function readAndDisplay()
                 <div class="setContainer" style = 'background-color: #b5ccff'>
                     <div class = 'horContainer' style = 'height: 100%'>
                         <div class = 'verContainer'>
-                            <h2 onclick = 'openAddSet()'> New set+ </h2>
+                            <h2> New set+ </h2>
                         </div>
                     </div>
                 </div>
@@ -115,18 +116,17 @@ function createDivForData(data) {
 let currentOpenedSetToEdit;
 function openEditSetName(setName) {
     currentOpenedSetToEdit = setName;
-    const editSetAlertContainer = document.querySelector('.editSetAlertContainer');
-    editSetAlertContainer.classList.add('fade-in');
-    editSetAlertContainer.style.display = 'block';
+    const entireAlertContainer = document.querySelector('.entireAlertContainer');
+    entireAlertContainer.classList.add('fade-in');
+    entireAlertContainer.style.display = 'block';
     
     setTimeout(function() {
-        editSetAlertContainer.classList.remove('fade-in');
+        entireAlertContainer.classList.remove('fade-in');
     }, 500);
 }
 
 // Save Edit Set Name
 function saveEditSetName() {
-    event.preventDefault(); 
     const newName = document.getElementById('changeInput').value; // Get new name
     const curr = currentOpenedSetToEdit;
     console.log("curr: ", curr);
@@ -137,17 +137,23 @@ function saveEditSetName() {
 
             // Change set name
             dataArray.forEach(data => {
-                if (data.setName === curr) 
+                console.log(typeof data.setName, typeof curr);
+                console.log("data.setName:", data.setName);
+                console.log("currentOpenedSetToEdit:", curr);
+
+                if (String(data.setName) === String(curr)) 
                 {
+                    console.log("data.setName before: ",data.setName);
                     data.setName = newName;
+                    console.log("data.setName after: ",data.setName);
                 }
             });
 
             // Save data to sets.json file
             try {
-                
                 fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
                 readAndDisplay();
+                console.log("File written");
             } catch (err) {
                 console.error(err);
             }
@@ -159,63 +165,11 @@ function saveEditSetName() {
 // Close Edit Set Name
 function closeEditSetName() {
     currentOpenedSetToEdit = '';
-    const editSetAlertContainer = document.querySelector('.editSetAlertContainer');
-    editSetAlertContainer.classList.add('fade-out');
+    const entireAlertContainer = document.querySelector('.entireAlertContainer');
+    entireAlertContainer.classList.add('fade-out');
 
     setTimeout(function() {
-        editSetAlertContainer.classList.remove('fade-out');
-        editSetAlertContainer.style.display = 'none';
-    }, 500);
-}
-
-// Open Add Set
-function openAddSet() {
-    const addSetAlertContainer = document.querySelector('.addSetAlertContainer');
-    addSetAlertContainer.classList.add('fade-in');
-    addSetAlertContainer.style.display = 'block';
-    
-    setTimeout(function() {
-        addSetAlertContainer.classList.remove('fade-in');
-    }, 500);
-}
-
-// Save Add Set
-function saveAddSet() {
-    event.preventDefault(); 
-    const newName = document.getElementById('newNameCreated').value; // Get new name
-
-    try {
-        const data = fs.readFileSync('src/sets.json'); // Read sets.json
-        const dataArray = JSON.parse(data); // Parse JSON data
-
-        // Add a new set with setName as newName to sets.json
-        const newSet = {
-            "setName": newName,
-            "totalCards": 0,
-            "learnedCards": 0
-        };
-        dataArray.push(newSet);
-
-        // Save data to sets.json file
-        fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
-
-        // Update the displayed sets
-        readAndDisplay();
-        console.log("File written");
-        
-        // closeAddSetName();
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-// Close Add Set
-function closeAddSetName() {
-    const addSetAlertContainer = document.querySelector('.addSetAlertContainer');
-    addSetAlertContainer.classList.add('fade-out');
-
-    setTimeout(function() {
-        addSetAlertContainer.classList.remove('fade-out');
-        addSetAlertContainer.style.display = 'none';
+        entireAlertContainer.classList.remove('fade-out');
+        entireAlertContainer.style.display = 'none';
     }, 500);
 }

@@ -39,7 +39,7 @@
     </div>
 
     <!-- Edit Set Name -->
-    <div class = 'editSetAlertContainer'>
+    <div class = 'entireAlertContainer'>
       <div class = 'horContainer alertContainer' style = 'height: 100%;'>
         <div class = 'verContainer' >
           <div class = 'editAlertBox'>
@@ -47,38 +47,13 @@
               <img class = 'exitIcon' onclick = 'closeEditSetName()' src = 'icons/x.png'>
             </div>
             <p> change set name </p>
-            <form>
-              <div class = 'horContainer'>
-                <input id = 'changeInput' maxlength="20" placeholder="enter new name" required>
-              </div>
-              <div class = 'horContainer'>
-                <button id = 'saveChanged' onclick = 'saveEditSetName()'> save </button>
-              </div>
-            </form>
-            
-          </div>
-        </div>
-      </div>
-      <div class = 'cover'></div>
-    </div>
-
-    <!-- Add Set -->
-    <div class = 'addSetAlertContainer'>
-      <div class = 'horContainer alertContainer' style = 'height: 100%;'>
-        <div class = 'verContainer' >
-          <div class = 'editAlertBox'>
-            <div class  = 'exitContainer' style = 'display: flex; justify-content: flex-end; '>
-              <img class = 'exitIcon' onclick = 'closeAddSetName()' src = 'icons/x.png'>
+            <div class = 'horContainer'>
+              <input id = 'changeInput' maxlength="20">
             </div>
-            <p> add a set </p>
-            <form>
-              <div class = 'horContainer'>
-                <input id = 'newNameCreated' maxlength="20" placeholder="create a name" required>
-              </div>
-              <div class = 'horContainer'>
-                <button id = 'saveChanged' onclick = 'saveAddSet()'> add set </button>
-              </div>
-            </form>
+            <div class = 'horContainer'>
+              <button id = 'saveChanged' onclick = 'saveEditSetName()'> save </button>
+            </div>
+            
           </div>
         </div>
       </div>
