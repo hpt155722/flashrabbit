@@ -87,6 +87,7 @@ function openEditSetName(setName)
 };
 
 //Save Edit Set Name
+/*
 function saveEditSetName()
 {
     const newName = $('#changeInput').val(); //Get new name
@@ -103,10 +104,10 @@ function saveEditSetName()
             }
         })
         .catch(error => console.error('Error:', error));
-
+        
+    const { ipcRenderer } = require('electron');
     ipcRenderer.send('save-data', data);
-
-}
+}*/
 
 //Close Edit Set Name
 function closeEditSetName()

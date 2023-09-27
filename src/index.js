@@ -14,6 +14,8 @@ const createWindow = () => {
     height: 600,
     icon: path.join(__dirname, 'icon.ico'), // Custom icon
     webPreferences: {
+      nodeIntegration: true, // Enable Node.js integration in renderer processes
+      contextIsolation: true, 
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -24,14 +26,6 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
-  // Listen for the 'save-to-file' event
-  ipcMain.on('save-to-file', (event, data) => {
-    const filePath = 'flashcards.json';
-
-    fs.writeFileSync(filePath, JSON.stringify(data));
-  });
-  
-  
 };
 
 // This method will be called when Electron has finished
@@ -48,6 +42,13 @@ app.on('window-all-closed', () => {
   }
 });
 
+// Save to json file
+ipcMain.on('save-data', (event, data) => {
+  fs.writeFileSync('sets.json', data.toString());
+  console.log("File written");
+});
+
+
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -59,8 +60,3 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-ipcMain.on('save-data', (event, data) => {
-  const filePath = 'data.json';
-  writeDataToFile(filePath, data);
-  event.reply('data-saved', 'Data saved successfully');
-});
