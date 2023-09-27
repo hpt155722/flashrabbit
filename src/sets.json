@@ -1,1 +1,50 @@
-[{"setName":"Left Eyeball","totalCards":0,"learnedCards":0},{"setName":"Right Eyeball","totalCards":0,"learnedCards":0},{"setName":"Contacts","totalCards":0,"learnedCards":0},{"setName":"test","totalCards":0,"learnedCards":0}]
+[
+    {
+        "setId": 1,
+        "setName": "Right Eyeball",
+        "cards": [
+            {
+                "cardId": 1,
+                "question": "What side of the face is the right eyeball located?",
+                "answer": "The Right",
+                "learned": true
+            },
+            {
+                "cardId": 2,
+                "question": "Example Question blah blah",
+                "answer": "answer blah",
+                "learned": false
+            },
+            {
+                "cardId": 3,
+                "question": "Butt",
+                "answer": "answer blah",
+                "learned": false
+            },
+            {
+                "cardId": 4,
+                "question": "ilovemater",
+                "answer": "materrrrr",
+                "learned": false
+            }
+        ]
+    },
+    {
+        "setId": 2,
+        "setName": "Left Eyeball",
+        "cards": [
+            {
+                "cardId": 1,
+                "question": "What side of the face is the right eyeball located?",
+                "answer": "The Left",
+                "learned": false
+            },
+            {
+                "cardId": 2,
+                "question": "Boop beep bop",
+                "answer": "Boop",
+                "learned": false
+            }
+        ]
+    }
+]

@@ -29,17 +29,17 @@
 .slide-out-bottom{-webkit-animation:slide-out-bottom .8s cubic-bezier(.55,.085,.68,.53) both;animation:slide-out-bottom .8s cubic-bezier(.55,.085,.68,.53) both}
 @-webkit-keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}
 
-.fade-out{-webkit-animation:fade-out .5s ease-out both;animation:fade-out .5s ease-out both}
+.fade-out{-webkit-animation:fade-out .3s ease-out both;animation:fade-out .3s ease-out both}
 @-webkit-keyframes fade-out{0%{opacity:1}100%{opacity:0}}@keyframes fade-out{0%{opacity:1}100%{opacity:0}}
 
 /* ENTRANCE ANIMATIONS */
 
-.slide-in-left{-webkit-animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both}
+.slide-in-left{-webkit-animation:slide-in-left .3s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-left .3s cubic-bezier(.25,.46,.45,.94) both}
 @-webkit-keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}
 
-.fade-in{-webkit-animation:fade-in .5s cubic-bezier(.39,.575,.565,1.000) both;animation:fade-in .5s cubic-bezier(.39,.575,.565,1.000) both}
+.fade-in{-webkit-animation:fade-in .3s cubic-bezier(.39,.575,.565,1.000) both;animation:fade-in .3s cubic-bezier(.39,.575,.565,1.000) both}
 @-webkit-keyframes fade-in{0%{opacity:0}100%{opacity:1}}@keyframes fade-in{0%{opacity:0}100%{opacity:1}}
 
-.slide-in-right{-webkit-animation:slide-in-right .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-right .5s cubic-bezier(.25,.46,.45,.94) both}
+.slide-in-right{-webkit-animation:slide-in-right .3s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-right .3s cubic-bezier(.25,.46,.45,.94) both}
 @-webkit-keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}
 

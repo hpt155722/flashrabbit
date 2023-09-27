@@ -74,8 +74,9 @@ html, body
     #cloudBase
     {
         width: 200%;
-        position: absolute;
+        position: fixed;
         bottom: 0;
+        left: 0;
     }
     #startLearning
     {
@@ -104,7 +105,7 @@ html, body
     {
         width: 25vw;
         position: absolute;
-        top: 60vw;
+        top: 75vw;
         left: 10vw;
         z-index: 1;
     }
