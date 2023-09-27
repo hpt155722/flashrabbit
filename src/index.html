@@ -3,10 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <title>flashRabbit!</title>
+
+    <!-- Import jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Import Main Stylesheet -->
     <link rel="stylesheet" href=" main.css" />
+    <!-- Import Login Stylesheet -->
+    <link rel="stylesheet" href="login.css" />
+    <!-- Import Animations Stylesheet -->
+    <link rel="stylesheet" href="animation.css" />
+    <!-- Import Login Script -->
+    <script src="start.js"></script>
+    
+
   </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
+
+  <body onload = 'onload()'>
+    <!-- Start Menu -->
+    <div id = 'startVerContainer' class = 'verContainer'>
+      <div class = 'horContainer'>
+        <img id = 'startLearning' src = 'images/startLearning.png' onclick = 'moveToMain()'/>
+      </div>
+    </div>
+    <img id = 'cloudBase' src = 'images/cloudBase.png'>
+    <img id = 'rightRabbit' src = 'images/rightRabbit.png'>
+    <img id = 'leftRabbit' src = 'images/leftRabbit.png'>
+    <img id = 'cloud1' src = 'images/cloud1.png'>
+    <img id = 'cloud2' src = 'images/cloud2.png'>
+    <img id = 'cloud3' src = 'images/cloud3.png'>
+
+    <!-- My Sets -->
+    <div id = 'header'>
+        <h1> MY SETS </h1>
+    </div>
+    <div class = 'horContainer'>
+      <div id = 'allSetsContainer'></div>
+    </div>
+
+    <!-- Edit Set Name -->
+    <div class = 'entireAlertContainer'>
+      <div class = 'horContainer alertContainer' style = 'height: 100%;'>
+        <div class = 'verContainer' >
+          <div class = 'editAlertBox'>
+            <div class  = 'exitContainer' style = 'display: flex; justify-content: flex-end; '>
+              <img class = 'exitIcon' onclick = 'closeEditSetName()' src = 'icons/x.png'>
+            </div>
+            <p> change set name </p>
+            <div class = 'horContainer'>
+              <input id = 'changeInput' maxlength="20">
+            </div>
+            <div class = 'horContainer'>
+              <button id = 'saveChanged' onclick = 'saveEditSetName()'> save </button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class = 'cover'></div>
+    </div>
+    
+    
+
   </body>
 </html>

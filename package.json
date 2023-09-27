@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "electron-json-storage": "^4.6.0",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
@@ -29,6 +30,5 @@
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "electron": "26.2.2",
     "electron-prebuilt-compile": "^2.0.0"
-
   }
 }

@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const fs = require('fs');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -22,6 +23,15 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  // Listen for the 'save-to-file' event
+  ipcMain.on('save-to-file', (event, data) => {
+    const filePath = 'flashcards.json';
+
+    fs.writeFileSync(filePath, JSON.stringify(data));
+  });
+  
+  
 };
 
 // This method will be called when Electron has finished
@@ -48,3 +58,9 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on('save-data', (event, data) => {
+  const filePath = 'data.json';
+  writeDataToFile(filePath, data);
+  event.reply('data-saved', 'Data saved successfully');
+});

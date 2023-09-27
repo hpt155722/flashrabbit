@@ -1,0 +1,127 @@
+@font-face {
+    font-family: happy;
+    src: url(fonts/Happy_Chicken.ttf);
+}
+
+html, body
+{
+    overflow-y: hidden;
+}
+
+@media (hover: hover) {
+    #startLearning:hover {
+        opacity: .5;
+        cursor: pointer;
+    }
+  }
+
+@media (orientation: landscape) {
+    #cloudBase
+    {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+    #startLearning
+    {
+        width: 40vh;
+        z-index: 5;
+    }
+    #rightRabbit
+    {
+        width: 12vh;
+        position: absolute;
+        top: 10vh;
+        right: 15vw;
+        z-index: 2;
+    }
+
+    #leftRabbit
+    {
+        width: 12vh;
+        position: absolute;
+        top: 30vh;
+        left: 15vw;
+        z-index: 2;
+    }
+    #cloud1
+    {
+        width: 25vh;
+        position: absolute;
+        top: 26vh;
+        left: 10vh;
+        z-index: 1;
+    }
+    #cloud2
+    {
+        width: 20vh;
+        position: absolute;
+        top: 12vh;
+        right: 50vh;
+        z-index: 1;
+    }
+    #cloud3
+    {
+        width: 20vh;
+        position: absolute;
+        top: 45vh;
+        right: 10vh;
+        z-index: 1;
+    }
+  }
+  
+  @media (orientation: portrait) {
+    #cloudBase
+    {
+        width: 200%;
+        position: absolute;
+        bottom: 0;
+    }
+    #startLearning
+    {
+        width: 50vw;
+        z-index: 5;
+    }
+    #rightRabbit
+    {
+        width: 12vw;
+        position: absolute;
+        top: 15vw;
+        right: 10vw;
+        z-index: 2;
+    }
+
+    #leftRabbit
+    {
+        width: 12vw;
+        position: absolute;
+        top: 50vw;
+        left: 10vw;
+        z-index: 2;
+    }
+    
+    #cloud1
+    {
+        width: 25vw;
+        position: absolute;
+        top: 60vw;
+        left: 10vw;
+        z-index: 1;
+    }
+    #cloud2
+    {
+        width: 20vw;
+        position: absolute;
+        top: 12vw;
+        right: 50vw;
+        z-index: 1;
+    }
+    #cloud3
+    {
+        width: 20vw;
+        position: absolute;
+        bottom: 50vw;
+        right: 5vw;
+        z-index: 1;
+    }
+  }
