@@ -24,7 +24,8 @@ html, body {
 }
 
 @media (hover: hover) {
-  button:hover, .setEditIcon:hover, .exitIcon:hover, .setContainer:hover  {
+  button:hover, .setEditIcon:hover, .exitIcon:hover, 
+  .setContainer:hover, .setEditIcon:hover, .cardEditIcon:hover  {
       opacity: .5;
       cursor: pointer;
   }
@@ -92,6 +93,7 @@ html, body {
     grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr)); 
     gap: 4vh; 
     width: 95%; 
+    margin: 0 0 4vh 0;
   }
   #allFlashcardsContainer
   {
@@ -99,6 +101,7 @@ html, body {
     grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr)); 
     gap: 4vh; 
     width: 95%; 
+    margin: 0 0 4vh 0;
   }
   .setContainer
   {
@@ -117,6 +120,7 @@ html, body {
     height: 30vh;
     border-radius: 5vh;
     position: relative;
+    padding: 0 0 7vh 0;
   }
   .cardContainer.learned 
   {
@@ -129,7 +133,7 @@ html, body {
   }
   .learnedText
   {
-    color: rgb(67, 62, 62);
+    color: rgb(255, 255, 255);
     font-size: 2.5vh;
     font-family: nexaHeavy;
     margin: 3vh 4vh;
@@ -176,6 +180,14 @@ html, body {
     top: 0;
     right: 0;
     margin: 4vh 4vh 0vh 0;
+  }
+  .cardEditIcon
+  {
+    width: 3.5vh;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0vw 0vw 4vw 4vw;
   }
   .alertContainer
   {
@@ -270,12 +282,21 @@ html, body {
     color: #45404b;
     margin: 4vw 4vw;
   }
-  #allSetsContainer, #allFlashcardsContainer
+  #allSetsContainer
   {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr)); 
     gap: 4vw; 
     width: 95%; 
+    margin: 0 0 4vw 0;
+  }
+  #allFlashcardsContainer
+  {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr)); 
+    gap: 4vw; 
+    width: 95%; 
+    margin: 0 0 4vw 0;
   }
   .setContainer
   {
@@ -285,6 +306,50 @@ html, body {
     height: 30vw;
     border-radius: 5vw;
     position: relative;
+  }
+  .cardContainer
+  {
+    flex: 1; /* Equal width for all items */
+    background-color: rgb(243, 178, 210);
+    width: 100%;
+    height: 30vw;
+    border-radius: 5vw;
+    position: relative;
+    padding: 0 0 7vw 0;
+  }
+  .cardContainer.learned 
+  {
+    flex: 1; /* Equal width for all items */
+    background-color: rgb(171, 205, 178);
+    width: 100%;
+    height: 30vw;
+    border-radius: 5vw;
+    position: relative;
+    padding: 0 0 5vw 0;
+  }
+  .learnedText
+  {
+    color: rgb(255, 255, 255);
+    font-size: 2.5vw;
+    font-family: nexaHeavy;
+    margin: 3vw 4vw;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  h4
+  {
+    color: rgb(67, 62, 62);
+    font-size: 2.5vw;
+    font-family: nexaHeavy;
+    margin: 3vw 4vw;
+  }
+  h3
+  {
+    color: rgb(67, 62, 62);
+    font-size: 3.5vw;
+    font-family: nexaHeavy;
+    margin: 3vw 4vw;
   }
   h2
   {
@@ -312,16 +377,32 @@ html, body {
     right: 0;
     margin: 4vw 4vw 0vw 0;
   }
+  .cardEditIcon
+  {
+    width: 4vw;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0vw 0vw 4vw 4vw;
+  }
   .alertContainer
   {
     position: absolute;
     top:0;
     left:0;
   }
+  .editAlertBox.setAlert
+  {
+    width: 60vw;
+    height: 43vw;
+    background-color: rgb(127, 179, 146);
+    border-radius: 5vh;
+    z-index: 10;
+  }
   .editAlertBox
   {
     width: 60vw;
-    height: 30vh;
+    height: 90vw;
     background-color: rgb(127, 179, 146);
     border-radius: 5vh;
     z-index: 10;
@@ -341,7 +422,9 @@ html, body {
     border-radius: 3vw;
     text-align: center;
     font-family: nexa;
+    font-size: 2.5vw;
     width: 40vw;
+    padding: 1vw 0 1vw 0;
   }
   textarea:focus, input:focus
   {
@@ -353,6 +436,7 @@ html, body {
     padding: 1vw 3vw 1vw 3vw;
     border-radius: 3vw;
     font-family: nexaHeavy;
+    font-size: 3vw;
     color:white;
     border: 0;
     margin: 3vw;
@@ -366,7 +450,7 @@ html, body {
   select
   {
     position: absolute;
-    right: 5vh;
+    right: 5vw;
     bottom: 1.2vw;
     background-color: rgb(254, 220, 255);
     color:#3b3d41;
@@ -374,7 +458,26 @@ html, body {
     border-radius: 3vw;
     font-family: nexa;
     text-align: center;
-    font-size: 3vw;
+    font-size: 1.5vw;
     padding: 1vw 1.5vw 1vw 1.5vw;
+  }
+  textArea
+  {
+    width: 80%;
+    height: 15vw;
+    border-radius: 4vw;
+    text-align: center;
+    padding: 1vw;
+    font-family: nexa;
+    font-size: 3vw;
+  }
+  .label
+  {
+    font-size: 3vw;
+  }
+  .backButton
+  {
+    width: 6vw;
+    margin: 3vw 3vw 0 4vw;
   }
 }

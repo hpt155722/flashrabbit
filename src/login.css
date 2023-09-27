@@ -3,11 +3,6 @@
     src: url(fonts/Happy_Chicken.ttf);
 }
 
-html, body
-{
-    overflow-y: hidden;
-}
-
 @media (hover: hover) {
     #startLearning:hover {
         opacity: .5;

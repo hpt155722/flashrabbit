@@ -1,6 +1,7 @@
 const fs = require('fs'); 
 
 function onload() {
+    document.documentElement.style.overflowY = 'hidden';
     //START ANIMATIONS
     document.getElementById('cloud1').classList.add('slide-left');
     document.getElementById('cloud2').classList.add('slide-right');
@@ -112,13 +113,10 @@ function readAndDisplay()
                 dataArray.sort((a, b) => {
                     const unlearnedA = a.cards.filter(card => !card.learned).length;
                     const unlearnedB = b.cards.filter(card => !card.learned).length;
-
-                    console.log('testa');  // Move this line here
-                    return unlearnedB - unlearnedA;
-                });
+                    return unlearnedA - unlearnedB;
+                });                
             } else { // Sort by A-Z
-                dataArray.sort((a, b) => a.setName.localeCompare(b.setName));
-                console.log('testb');  // Move this line here
+                dataArray.sort((a, b) => b.setName.localeCompare(a.setName));
             }
 
 
@@ -139,7 +137,7 @@ function readAndDisplay()
                 learned = stats ? stats.learnedCards : 0;
 
                 const div = createDivForData(data, total, learned);
-                container.appendChild(div); 
+                container.prepend(div); 
             });
 
         
@@ -350,19 +348,27 @@ function readAndDisplayCards()
 
             // Sort the cards based on cardSortBy
             if (cardSortBy === 'Unlearned First') {
-                set.cards.sort((a, b) => (a.learned && !b.learned) ? 1 : -1);
+                set.cards.sort((a, b) => (a.learned && !b.learned) ? -1 : 1);
                 
             } else {
-                set.cards.sort((a, b) => a.question.localeCompare(b.question));
+                set.cards.sort((a, b) => b.question.localeCompare(a.question));
             }
 
             // Display each card
             const container = document.getElementById('allFlashcardsContainer'); // Assuming you have a container element with id 'cardsContainer'
-            container.innerHTML = '';
+            container.innerHTML = `
+                <div class="setContainer" style = 'background-color: #b5ccff'>
+                    <div class = 'horContainer' style = 'height: 100%'>
+                        <div class = 'verContainer'>
+                            <h2 onclick = 'openAddCard()'> New card+ </h2>
+                        </div>
+                    </div>
+                </div>
+            `;
 
             set.cards.forEach(card => {
                 const cardDiv = createCardDiv(card);
-                container.appendChild(cardDiv);
+                container.prepend(cardDiv);
             });
         })
         .catch(error => console.error('Error:', error));
@@ -380,7 +386,7 @@ function createCardDiv(card) {
         <h3> ${card.question} </h3>
         <h4> ${card.answer} </p>
         <p class = 'learnedText'> Learned: ${card.learned ? '✓' : 'X'} </p>
-        <img onclick="openEditCard(${card.cardId})" class="setEditIcon" src="icons/edit.png">
+        <img onclick="openEditCard(${card.cardId})" class="cardEditIcon" src="icons/edit.png">
     `;
 
     return cardDiv;
