@@ -24,7 +24,7 @@ html, body {
 }
 
 @media (hover: hover) {
-  button:hover, .setEditIcon:hover, .exitIcon:hover  {
+  button:hover, .setEditIcon:hover, .exitIcon:hover, .setContainer:hover  {
       opacity: .5;
       cursor: pointer;
   }
@@ -72,8 +72,8 @@ html, body {
   }
   #allSetsContainer
   {
-    display: flex;
-    flex-wrap: wrap; 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr)); 
     gap: 4vh; 
     width: 95%; 
   }
@@ -81,7 +81,7 @@ html, body {
   {
     flex: 1; /* Equal width for all items */
     background-color: rgb(245, 157, 201);
-    width: 33%;
+    width: 100%;
     height: 30vh;
     border-radius: 5vh;
     position: relative;
@@ -176,8 +176,8 @@ html, body {
   }
   #allSetsContainer
   {
-    display: flex;
-    flex-wrap: wrap; 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr)); 
     gap: 4vw; 
     width: 95%; 
   }
@@ -185,7 +185,7 @@ html, body {
   {
     flex: 1; /* Equal width for all items */
     background-color: rgb(245, 157, 201);
-    width: 40%;
+    width: 100%;
     height: 30vw;
     border-radius: 5vw;
     position: relative;
@@ -193,7 +193,7 @@ html, body {
   h2
   {
     color: white;
-    font-size: 3.5vw;
+    font-size: 3vw;
     font-family: nexaHeavy;
     margin: 3vw 4vw;
   }
@@ -225,7 +225,7 @@ html, body {
   .editAlertBox
   {
     width: 60vw;
-    height: 20vh;
+    height: 30vh;
     background-color: rgb(127, 179, 146);
     border-radius: 5vh;
     z-index: 10;
