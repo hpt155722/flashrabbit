@@ -1,1 +1,51 @@
-[{"setId":1,"setName":"Right Eyeball","cards":[{"cardId":1,"question":"What side of the face is the right eyeball located?","answer":"The Right","learned":true},{"cardId":2,"question":"Blah blah blah?","answer":"answer blah","learned":false},{"cardId":3,"question":"How many eyeballs do the average human have?","answer":"two","learned":false},{"cardId":4,"question":"ilovemater","answer":"materrrrr","learned":false}]},{"setId":2,"setName":"Left Eyeball","cards":[{"cardId":1,"question":"What side of the face is the right eyeball located?","answer":"The Left","learned":false},{"cardId":2,"question":"Boop beep bop","answer":"Boop","learned":false}]}]
+[
+    {
+        "cards": [
+            {
+                "answer": "The Right",
+                "cardId": 1,
+                "learned": true,
+                "question": "What side of the face is the right eyeball located?",
+                "imgPath": "cardImages/spongebob.jpg"
+            },
+            {
+                "answer": "answer blah",
+                "cardId": 2,
+                "learned": false,
+                "question": "Blah blah blah?"
+            },
+            {
+                "answer": "two",
+                "cardId": 3,
+                "learned": false,
+                "question": "How many eyeballs do the average human have?"
+            },
+            {
+                "answer": "materrrrr",
+                "cardId": 4,
+                "learned": false,
+                "question": "ilovemater"
+            }
+        ],
+        "setId": 1,
+        "setName": "Right Eyeball"
+    },
+    {
+        "cards": [
+            {
+                "answer": "The Left",
+                "cardId": 1,
+                "learned": false,
+                "question": "What side of the face is the right eyeball located?"
+            },
+            {
+                "answer": "Boop",
+                "cardId": 2,
+                "learned": false,
+                "question": "Boop beep bop"
+            }
+        ],
+        "setId": 2,
+        "setName": "Left Eyeball"
+    }
+]

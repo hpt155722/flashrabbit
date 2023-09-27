@@ -382,10 +382,19 @@ function createCardDiv(card) {
         cardDiv.classList.add('learned'); // Add a class if learned is true
     }
   
+    let imageElement = ''; // Initialize empty string
+
+    if (card.imgPath) {
+        imageElement = `<img class='cardImage' src='${card.imgPath}'>`; // Concatenate imgPath
+    }
+
     cardDiv.innerHTML = `
         <h3> ${card.question} </h3>
-        <h4> ${card.answer} </p>
-        <p class = 'learnedText'> Learned: ${card.learned ? '✓' : 'X'} </p>
+        <h4> ${card.answer} </h4>
+        <div class = 'horContainer'>
+            ${imageElement} 
+        </div>
+        <p class='learnedText'> Learned: ${card.learned ? '✓' : 'X'} </p>
         <img onclick="openEditCard(${card.cardId})" class="cardEditIcon" src="icons/edit.png">
     `;
 
