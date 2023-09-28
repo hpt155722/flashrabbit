@@ -13,6 +13,9 @@
   src: url(fonts/Nexa-Heavy.ttf);
 }
 
+body::-webkit-scrollbar {
+  width: 0.0; /* Adjust as needed */
+}
 
 html, body {
   height: 100%;
@@ -25,7 +28,8 @@ html, body {
 
 @media (hover: hover) {
   button:hover, .setEditIcon:hover, .exitIcon:hover, 
-  .setContainer:hover, .setEditIcon:hover, .cardEditIcon:hover  {
+  .setContainer:hover, .setEditIcon:hover, .cardEditIcon:hover,
+  .backButton:hover, select:hover, #deleteSet:hover, #deleteCard:hover  {
       opacity: .5;
       cursor: pointer;
   }
@@ -68,21 +72,12 @@ html, body {
   position: relative;
 }
 
-.drop-area {
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.drop-message {
-  font-size: 18px;
-}
 
 @media (orientation: landscape) {
   h1
   {
     font-family: happy;
+    font-size: 4vw;
     letter-spacing: .5vh;
     color: #45404b;
     margin: 4vh 4vh;
@@ -99,9 +94,10 @@ html, body {
   {
     display: flex;
     flex-wrap: wrap;
+    align-self: center;
     justify-content: space-between; 
-    width: 95%; 
-    margin: 0 0 4vh 0;
+    width: 90%; 
+    margin: 0 0 5vh 0 ;
   }
   .setContainer
   {
@@ -114,13 +110,11 @@ html, body {
   }
   .cardContainer
   {
-    flex: 0 0 48%; /* This sets each item to be a maximum of 48% width, allowing for two columns */
-    margin-bottom: 20px;
-    align-self: flex-start; 
+    margin-bottom: 5vh;
+    width: 90vw;
     background-color: rgb(243, 178, 210);
     border-radius: 5vh;
     position: relative;
-    padding: 0 0 9vh 0;
   }
   .learned 
   {
@@ -129,19 +123,35 @@ html, body {
   .learnedText
   {
     color: rgb(255, 255, 255);
-    font-size: 2.5vh;
+    font-size: 3.5vh;
     font-family: nexaHeavy;
-    margin: 3vh 4vh;
+    margin: 0;
+  }
+  input.smallerCheckbox 
+  {
+    width: 3vh;
+    height: 3vh;
+    padding: 0;
+    margin-left: 2vh;
+    position: relative;
+    top: 1.4vh;
+  }
+  .learnedBox
+  {
     position: absolute;
     bottom: 0;
     right: 0;
+    height: auto;
+    margin: 0 4vh 2.5vh 0;
   }
   h4
   {
     color: rgb(67, 62, 62);
     font-size: 2.5vh;
-    font-family: nexaHeavy;
+    font-family: nexa;
     margin: 3vh 4vh;
+    position: relative;
+    bottom: 2vh;
   }
   h3
   {
@@ -153,7 +163,7 @@ html, body {
   h2
   {
     color: white;
-    font-size: 3.5vh;
+    font-size: 2vw;
     font-family: nexaHeavy;
     margin: 3vh 4vh;
   }
@@ -170,7 +180,7 @@ html, body {
   }
   .setEditIcon
   {
-    width: 4vh;
+    width: 2vw;
     position: absolute;
     top: 0;
     right: 0;
@@ -178,9 +188,9 @@ html, body {
   }
   .cardEditIcon
   {
-    width: 3.5vh;
+    width: 2vw;
     position: absolute;
-    bottom: 0;
+    bottom: -2vh;
     left: 0;
     margin: 0vw 0vw 4vw 4vw;
   }
@@ -193,7 +203,7 @@ html, body {
   .editAlertBox
   {
     width: 40vw;
-    height: 70vh;
+    height: auto;
     background-color: rgb(127, 179, 146);
     border-radius: 5vh;
     z-index: 10;
@@ -269,7 +279,14 @@ html, body {
   }
   .cardImage
   {
-    width: 90%;
+    height: 30vh;
+    border-radius: 3vh;
+    margin: 4vh 4vh 4vh 3vh;
+  }
+  #deleteSet, #deleteCard
+  {
+    width: 4vh;
+    margin: 0 0 4vh 4vh;
   }
 }
 
@@ -280,6 +297,7 @@ html, body {
     letter-spacing: .5vw;
     color: #45404b;
     margin: 4vw 4vw;
+    font-size: 3.5vw;
   }
   #allSetsContainer
   {
@@ -291,11 +309,12 @@ html, body {
   }
   #allFlashcardsContainer
   {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr)); 
-    gap: 4vw; 
-    width: 95%; 
-    margin: 0 0 4vw 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    justify-content: space-between; 
+    width: 90%; 
+    margin: 0 0 5vw 0 ;
   }
   .setContainer
   {
@@ -308,33 +327,39 @@ html, body {
   }
   .cardContainer
   {
-    flex: 1; /* Equal width for all items */
+    margin-bottom: 5vw;
+    width: 90vw;
     background-color: rgb(243, 178, 210);
-    width: 100%;
-    height: 30vw;
     border-radius: 5vw;
     position: relative;
-    padding: 0 0 7vw 0;
   }
-  .cardContainer.learned 
+  .learned 
   {
-    flex: 1; /* Equal width for all items */
     background-color: rgb(171, 205, 178);
-    width: 100%;
-    height: 30vw;
-    border-radius: 5vw;
-    position: relative;
-    padding: 0 0 5vw 0;
   }
   .learnedText
   {
     color: rgb(255, 255, 255);
-    font-size: 2.5vw;
+    font-size: 3.5vw;
     font-family: nexaHeavy;
-    margin: 3vw 4vw;
+    margin: 0;
+  }
+  input.smallerCheckbox 
+  {
+    width: 3vw;
+    height: 3vw;
+    padding: 0;
+    margin-left: 2vw;
+    position: relative;
+    top: 1.4vw;
+  }
+  .learnedBox
+  {
     position: absolute;
     bottom: 0;
     right: 0;
+    height: auto;
+    margin: 0 4vw 2.5vh 0;
   }
   h4
   {
@@ -390,18 +415,10 @@ html, body {
     top:0;
     left:0;
   }
-  .editAlertBox.setAlert
-  {
-    width: 60vw;
-    height: 43vw;
-    background-color: rgb(127, 179, 146);
-    border-radius: 5vh;
-    z-index: 10;
-  }
   .editAlertBox
   {
     width: 60vw;
-    height: 90vw;
+    height: auto;
     background-color: rgb(127, 179, 146);
     border-radius: 5vh;
     z-index: 10;
@@ -457,7 +474,7 @@ html, body {
     border-radius: 3vw;
     font-family: nexa;
     text-align: center;
-    font-size: 1.5vw;
+    font-size: 2.2vw;
     padding: 1vw 1.5vw 1vw 1.5vw;
   }
   textArea
@@ -479,4 +496,16 @@ html, body {
     width: 6vw;
     margin: 3vw 3vw 0 4vw;
   }
+  .cardImage
+  {
+    height: 30vw;
+    border-radius: 3vw;
+    margin: 4vw 4vw 4vw 3vw;
+  }
+  #deleteSet, #deleteCard
+  {
+    width: 4vw;
+    margin: 0 0 4vw 4vw;
+  }
+
 }

@@ -65,19 +65,19 @@ function moveToMain() {
 
         document.documentElement.style.overflowY = 'scroll';
         readAndDisplay(); //PREPARE SETS
-    }, 800);
+    }, 300);
 
     setTimeout(function() {
         document.getElementById('setsPageHeader').style.display = 'block';
         document.getElementById('setsPageHeader').classList.add('slide-in-left');
         document.getElementById('allSetsContainerContainer').style.display = 'flex';
         document.getElementById('allSetsContainerContainer').classList.add('slide-in-right');
-    }, 900);
+    }, 400);
 
     setTimeout(function() {
         document.getElementById('setsPageHeader').classList.remove('slide-in-left');
         document.getElementById('allSetsContainerContainer').classList.remove('slide-in-right');
-    }, 1800);
+    }, 700);
 }
 
 let setSortBy = 'A-Z';
@@ -147,7 +147,10 @@ function readAndDisplay()
 
 function calculateSetStats(dataArray, setId) {
     const set = dataArray.find(set => set.setId === setId);
-    if (!set) return null;
+    if (!set) {
+        console.error(`Set with ID ${setId} not found.`);
+        return null;
+    }
 
     const totalCards = set.cards.length;
     const learnedCards = set.cards.filter(card => card.learned).length;
@@ -174,18 +177,17 @@ function createDivForData(data, total, learned) {
     const editIcon = div.querySelector(`#editIcon-${data.setId}`);
     editIcon.addEventListener('click', function(event) {
         event.stopPropagation(); // Stop propagation to prevent the div click event
-        openEditSetName(data.setName);
+        openEditSetName(data.setId);
     });
 
   
     return div;
 }
 
-
 // Open Edit Set Name
 let currentOpenedSetToEdit;
-function openEditSetName(setName) {
-    currentOpenedSetToEdit = setName;
+function openEditSetName(setID) {
+    currentOpenedSetToEdit = setID;
     const editSetAlertContainer = document.querySelector('.editSetAlertContainer');
     editSetAlertContainer.classList.add('fade-in');
     editSetAlertContainer.style.display = 'block';
@@ -198,8 +200,7 @@ function openEditSetName(setName) {
 // Save Edit Set Name
 function saveEditSetName() {
     const newName = document.getElementById('changeInput').value; // Get new name
-    const curr = currentOpenedSetToEdit;
-    console.log("curr: ", curr);
+
     fetch('sets.json')
         .then(response => response.json())
         .then(data => {
@@ -207,15 +208,8 @@ function saveEditSetName() {
 
             // Change set name
             dataArray.forEach(data => {
-                console.log(typeof data.setName, typeof curr);
-                console.log("data.setName:", data.setName);
-                console.log("currentOpenedSetToEdit:", curr);
-
-                if (String(data.setName) === String(curr)) 
-                {
-                    console.log("data.setName before: ",data.setName);
+                if (data.setId === currentOpenedSetToEdit) {
                     data.setName = newName;
-                    console.log("data.setName after: ",data.setName);
                 }
             });
 
@@ -229,7 +223,41 @@ function saveEditSetName() {
             }
         })
         .catch(error => console.error('Error:', error));
-        closeEditSetName();
+
+    closeEditSetName();
+}
+
+//Delete Set
+function deleteSet() {
+    try {
+        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        let dataArray = JSON.parse(data); // Parse JSON data
+
+        // Find the index of the set to delete
+        const setIndex = dataArray.findIndex(set => set.setId === currentOpenedSetToEdit);
+
+        if (setIndex !== -1) {
+            // Remove all cards from the set
+            dataArray[setIndex].cards = [];
+
+            // Remove the set from the array
+            dataArray.splice(setIndex, 1);
+
+            // Save data back to sets.json file
+            try {
+                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                console.log(`Set with ID ${currentOpenedSetToEdit} deleted.`);
+                readAndDisplay();
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            console.error(`Set with ID ${currentOpenedSetToEdit} not found.`);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+    closeEditSetName();
 }
 
 // Close Edit Set Name
@@ -257,17 +285,23 @@ function openAddSet() {
 
 // Save Add Set
 function saveAddSet() {
+    document.getElementById('saveChanged').hide();
     const newName = document.getElementById('newNameCreated').value; // Get new name
 
     try {
         const data = fs.readFileSync('src/sets.json'); // Read sets.json
         const dataArray = JSON.parse(data); // Parse JSON data
 
+        // Get the next set ID
+        const newSetId = getNextSetId(dataArray);
+
         // Add a new set with setName as newName to sets.json
         const newSet = {
+            "setId": newSetId,
             "setName": newName,
             "totalCards": 0,
-            "learnedCards": 0
+            "learnedCards": 0,
+            "cards": []
         };
         dataArray.push(newSet);
 
@@ -283,12 +317,25 @@ function saveAddSet() {
         // Update the displayed sets
         readAndDisplay();
         console.log("File written");
-        
-        // closeAddSetName();
+
     } catch (err) {
         console.error(err);
     }
     closeAddSetName();
+}
+
+
+//Auto increment setID
+function getNextSetId(dataArray) {
+    let maxSetId = 0;
+
+    for (const set of dataArray) {
+        if (set.setId > maxSetId) {
+            maxSetId = set.setId;
+        }
+    }
+
+    return maxSetId + 1;
 }
 
 // Close Add Set
@@ -302,9 +349,12 @@ function closeAddSetName() {
     }, 500);
 }
 
-//FLASHCARD JAVASCRIPT
 
-let currOpenedSetToView;
+
+
+// *:･ﾟ✧*:･ﾟ✧ FLASHCARD JAVASCRIPT *:･ﾟ✧*:･ﾟ✧
+
+let currOpenedSetToView; //For card view
 function moveToFlashcards(setID, setName) {
     currOpenedSetToView = setID;
     document.getElementById('nameOfSetOnFlashcardPage').innerHTML = 'ʚ ♡ ' + setName + ' ♡ ɞ';
@@ -319,21 +369,22 @@ function moveToFlashcards(setID, setName) {
         document.getElementById('allSetsContainerContainer').classList.remove('slide-out-left');
 
         readAndDisplayCards(); //PREPARE SETS
-    }, 800);
+    }, 300);
 
     setTimeout(function() {
         document.getElementById('flashcardPageHeader').style.display = 'block';
         document.getElementById('flashcardPageHeader').classList.add('slide-in-right');
         document.getElementById('allFlashcardsContainerContainer').style.display = 'flex';
         document.getElementById('allFlashcardsContainerContainer').classList.add('slide-in-right');
-    }, 900);
+    }, 400);
 
     setTimeout(function() {
         document.getElementById('flashcardPageHeader').classList.remove('slide-in-right');
         document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-in-right');
-    }, 1800);
+    }, 700);
 }
 
+//Read and Display Cards
 function readAndDisplayCards()
 {
     // Read and display sets from set.json
@@ -358,12 +409,13 @@ function readAndDisplayCards()
             const container = document.getElementById('allFlashcardsContainer'); // Assuming you have a container element with id 'cardsContainer'
             container.innerHTML = `
                 <div class="setContainer" style = 'background-color: #b5ccff'>
-                    <div class = 'horContainer' style = 'height: 100%'>
+                    <div onclick = 'openAddCard()' class = 'horContainer' style = 'height: 100%;'>
                         <div class = 'verContainer'>
-                            <h2 onclick = 'openAddCard()'> New card+ </h2>
+                            <h2> New card+ </h2>
                         </div>
                     </div>
                 </div>
+                
             `;
 
             set.cards.forEach(card => {
@@ -374,6 +426,7 @@ function readAndDisplayCards()
         .catch(error => console.error('Error:', error));
 }
 
+//Create a card (for iteration)
 function createCardDiv(card) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('cardContainer'); 
@@ -389,17 +442,69 @@ function createCardDiv(card) {
     }
 
     cardDiv.innerHTML = `
-        <h3> ${card.question} </h3>
-        <h4> ${card.answer} </h4>
-        <div class = 'horContainer'>
-            ${imageElement} 
+        
+        <div style = 'display: flex; justify-content: space-between;'>
+            <div style = 'display: flex; flex-direction: column;text-align: left;'>
+                <h3> ${card.question} </h3>
+                <h4> ${card.answer} </h4>
+            </div>
+            <div style = 'text-align: right;'> ${imageElement} </div>
         </div>
-        <p class='learnedText'> Learned: ${card.learned ? '✓' : 'X'} </p>
-        <img onclick="openEditCard(${card.cardId})" class="cardEditIcon" src="icons/edit.png">
+        <div style = 'width: 90%; height: 7vh;' play: flex; justify-content: space-between;> 
+            <div class = 'learnedBox' style = 'display: flex'>
+                <p class='learnedText' style = 'text-align: left'> Learned: </p>
+                <div class = 'verContainer'>
+                    <input type='checkbox' class = 'smallerCheckbox' ${card.learned ? 'checked' : ''} onclick='toggleLearned(${card.cardId})'>
+                </div>
+            </div>
+            <img onclick="openEditCard(${card.cardId})" class="cardEditIcon" src="icons/edit.png" style = 'text-align: right'> 
+        </div>
     `;
 
     return cardDiv;
 }
+
+function toggleLearned(cardId) {
+    fetch('sets.json')
+        .then(response => response.json())
+        .then(data => {
+            const dataArray = data; // Assign the fetched data to dataArray
+
+            // Find the set and card
+            const set = dataArray.find(item => item.setId === currOpenedSetToView);
+            if (!set) {
+                console.error(`Set with ID ${currOpenedSetToView} not found.`);
+                return;
+            }
+
+            const card = set.cards.find(card => card.cardId === cardId);
+            if (!card) {
+                console.error(`Card with ID ${cardId} not found in set ${set.setId}.`);
+                return;
+            }
+
+            // Update card question and answer
+            if (card.learned === false)
+            {
+                card.learned = true;
+            }
+            else
+            {
+                card.learned = false;
+            }
+
+            // Save data to sets.json file
+            try {
+                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                readAndDisplayCards();
+                console.log("File written");
+            } catch (err) {
+                console.error(err);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+} 
+
 
 let cardSortBy = 'A-Z';
 document.getElementById('flashcardSortBy').addEventListener('change', function() {
@@ -416,25 +521,43 @@ document.getElementById('flashcardSortBy').addEventListener('change', function()
 
 // Open Edit Card
 let currentOpenedCardToEdit;
-async function openEditCard(cardID) {
+function openEditCard(cardID) {
     currentOpenedCardToEdit = cardID;
     const editFlashcardAlertContainer = document.querySelector('.editFlashcardAlertContainer');
     editFlashcardAlertContainer.classList.add('fade-in');
     editFlashcardAlertContainer.style.display = 'block';
 
-    //SET CURRENT EDITS AS JSON DATA
-    const frontOfCardText = document.getElementById('changedCardQuestion');
-    const backOfCardText = document.getElementById('changedCardAnswer');
-    
-    try {
-        const card = await findCardById(currOpenedSetToView, cardID);
-        if (card) {
-            frontOfCardText.value = card.question;
-            backOfCardText.value = card.answer;
+    //SET CURRENT EDITS PLACEHOLDERS AS JSON DATA
+    fetch('sets.json')
+    .then(response => response.json())
+    .then(data => {
+        const dataArray = data; // Assign the fetched data to dataArray
+
+        // Find the set with matching setID
+        const targetSet = dataArray.find(item => item.setId === currOpenedSetToView);
+
+        if (targetSet) {
+            // Find the card with matching cardID in the target set
+            const targetCard = targetSet.cards.find(card => card.cardId === currentOpenedCardToEdit);
+
+            if (targetCard) {
+                const cardQuestion = targetCard.question;
+                const cardAnswer = targetCard.answer;
+
+                // Now you have cardQuestion and cardAnswer available
+                document.getElementById('changedCardQuestion').value = cardQuestion;
+                document.getElementById('changedCardAnswer').value = cardAnswer;
+            } else {
+                console.error(`Card with ID ${currentOpenedCardToEdit} not found in the target set.`);
+            }
+        } else {
+            console.error(`Set with ID ${currOpenedSetToView} not found.`);
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error('Error:', error);
-    }
+    });
+
 
     setTimeout(function() {
         editFlashcardAlertContainer.classList.remove('fade-in');
@@ -445,7 +568,7 @@ async function openEditCard(cardID) {
 function findCardById(setId, cardId) {
     return fetch('sets.json')
         .then(response => response.json())
-        .then(data => { 
+        .then(data => {
             const set = data.find(item => item.setId === setId);
             if (!set) {
                 console.error(`Set with ID ${setId} not found.`);
@@ -453,7 +576,7 @@ function findCardById(setId, cardId) {
             }
 
             const card = set.cards.find(card => card.cardId === cardId);
-            return card || null;
+            return { set, card } || null;
         })
         .catch(error => {
             console.error('Error:', error);
@@ -465,9 +588,6 @@ function findCardById(setId, cardId) {
 function saveEditFlashcard() {
     const changedCardQuestion = document.getElementById('changedCardQuestion').value; // Get Question
     const changedCardAnswer = document.getElementById('changedCardAnswer').value; // Get Answer
-
-    console.log('currOpenedSetToView: ', currOpenedSetToView);
-    console.log('currentOpenedCardToEdit: ', currentOpenedCardToEdit);
 
     fetch('sets.json')
         .then(response => response.json())
@@ -505,7 +625,6 @@ function saveEditFlashcard() {
     closeEditFlashcard();
 }
 
-
 // Close Edit Card
 function closeEditFlashcard() {
     const editFlashcardAlertContainer = document.querySelector('.editFlashcardAlertContainer');
@@ -517,6 +636,93 @@ function closeEditFlashcard() {
     }, 500);
 }
 
+// Open Add Card
+function openAddCard() {
+    const addFlashcardAlertContainer = document.querySelector('.addFlashcardAlertContainer');
+    addFlashcardAlertContainer.classList.add('fade-in');
+    addFlashcardAlertContainer.style.display = 'block';
+    
+    setTimeout(function() {
+        addFlashcardAlertContainer.classList.remove('fade-in');
+    }, 500);
+}
+
+// Save Add Card
+function saveAddCard() {
+    const newCardQuestion = document.getElementById('newCardQuestion').value; // Get new question
+    const newCardAnswer = document.getElementById('newCardAnswer').value; // Get new answer
+
+    try {
+        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        const dataArray = JSON.parse(data); // Parse JSON data
+
+        // Find the set within dataArray that matches currOpenedSetToView
+        const setToUpdate = dataArray.find(set => set.setId === currOpenedSetToView);
+
+        if (setToUpdate) {
+            // Generate a new card ID (You may need to implement a proper ID generation logic)
+            const newCardId = generateNewCardId(setToUpdate);
+
+            // Create the new card object
+            const newCard = {
+                "answer": newCardAnswer,
+                "cardId": newCardId,
+                "learned": false,
+                "question": newCardQuestion,
+            };
+
+            // Push the new card to the cards array of the set
+            setToUpdate.cards.push(newCard);
+
+            // Save data to sets.json file
+            try {
+                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                readAndDisplay();
+                console.log("File written");
+            } catch (err) {
+                console.error(err);
+            }
+
+            // Update the displayed sets
+            readAndDisplayCards();
+            console.log("File written");
+        } else {
+            console.error(`Set with ID ${currOpenedSetToView} not found.`);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+
+    closeAddCard();
+}
+
+//Auto increment card IDs
+function generateNewCardId(set) {
+    let maxCardId = 0;
+
+    // Find the highest card ID in the set
+    for (const card of set.cards) {
+        if (card.cardId > maxCardId) {
+            maxCardId = card.cardId;
+        }
+    }
+
+    // Increment the highest card ID to generate a new unique ID
+    return maxCardId + 1;
+}
+
+// Close Add Card
+function closeAddCard() {
+    const addFlashcardAlertContainer = document.querySelector('.addFlashcardAlertContainer');
+    addFlashcardAlertContainer.classList.add('fade-out');
+
+    setTimeout(function() {
+        addFlashcardAlertContainer.classList.remove('fade-out');
+        addFlashcardAlertContainer.style.display = 'none';
+    }, 500);
+}
+
+//Move Back to Sets
 function backToSets()
 {
     document.getElementById('flashcardPageHeader').classList.add('slide-out-right');
@@ -530,17 +736,17 @@ function backToSets()
         document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-out-right');
 
         readAndDisplay(); //PREPARE SETS
-    }, 800);
+    }, 300);
 
     setTimeout(function() {
         document.getElementById('setsPageHeader').style.display = 'block';
         document.getElementById('setsPageHeader').classList.add('slide-in-left');
         document.getElementById('allSetsContainerContainer').style.display = 'flex';
         document.getElementById('allSetsContainerContainer').classList.add('slide-in-left');
-    }, 900);
+    }, 400);
 
     setTimeout(function() {
         document.getElementById('setsPageHeader').classList.remove('slide-in-left');
         document.getElementById('allSetsContainerContainer').classList.remove('slide-in-left');
-    }, 1800);
+    }, 700);
 }

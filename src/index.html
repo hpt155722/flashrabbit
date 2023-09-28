@@ -32,7 +32,7 @@
 
     <!-- Header -->
     <div id = 'setsPageHeader'>
-        <h1>⋆ ｡ ° • ☁️ MY SETS ☁️• ° ｡ ⋆</h1>
+        <h1>⋆ ｡ ° ☁️ MY SETS ☁️ ° ｡ ⋆</h1>
         <select id="setSortBy">
           <option value="A-Z">A-Z</option>
           <option value="Most Unlearned">Most Unlearned</option>
@@ -56,10 +56,14 @@
             <div class = 'horContainer'>
               <input id = 'changeInput' maxlength="20" placeholder="enter new name">
             </div>
+            <!-- Save Button -->
             <div class = 'horContainer'>
               <button id = 'saveChanged' onclick = 'saveEditSetName()'> save </button>
             </div>
-            
+            <!-- Delete Button -->
+            <div style = 'display: flex;'>
+              <img id = 'deleteSet' onclick = 'deleteSet()' src = 'icons/trash.png'> 
+            </div>
           </div>
         </div>
       </div>
@@ -79,7 +83,7 @@
               <input id = 'newNameCreated' maxlength="20" placeholder="create a name">
             </div>
             <div class = 'horContainer'>
-              <button id = 'saveChanged' onclick = 'saveAddSet()'> save </button>
+              <button id = 'saveChanged' onclick = 'saveAddSet()'> create </button>
             </div>
             
           </div>
@@ -93,7 +97,7 @@
     <!-- Header -->
     <div id = 'flashcardPageHeader'>
       <img class = 'backButton' onclick = 'backToSets()' src = 'icons/back.png'>
-      <h1 id = 'nameOfSetOnFlashcardPage'>⋆ ｡ ° • ☁️ MY SETS ☁️• ° ｡ ⋆</h1>
+      <h1 id = 'nameOfSetOnFlashcardPage'>⋆ ° • ☁️ MY SETS ☁️• ° ⋆</h1>
       <select id="flashcardSortBy">
         <option value="A-Z">A-Z</option>
         <option value="Unlearned First">Unlearned First</option>
@@ -127,10 +131,14 @@
             <div class="drop-message">Drag & Drop Image Here</div>
             <input type="file" id="fileInput" accept="image/*">
           </div> -->
+          <!-- Save Button -->
           <div class = 'horContainer'>
             <button id = 'saveFlashCardEdit' onclick = 'saveEditFlashcard()'> save </button>
           </div>
-          
+          <!-- Delete Button -->
+          <div style = 'display: flex;'>
+            <img id = 'deleteSet' onclick = 'deleteSet()' src = 'icons/trash.png'> 
+          </div>
         </div>
       </div>
     </div>
@@ -143,7 +151,7 @@
       <div class = 'verContainer' >
         <div class = 'editAlertBox'>
           <div class  = 'exitContainer' style = 'display: flex; justify-content: flex-end; '>
-            <img class = 'exitIcon' onclick = 'closeAddFlashcard()' src = 'icons/x.png'>
+            <img class = 'exitIcon' onclick = 'closeAddCard()' src = 'icons/x.png'>
           </div>
           <p> ☁️ create a card ☁️ </p>
           <p class = 'label'> enter front of card: </p>
@@ -154,15 +162,13 @@
           <div class = 'horContainer'>
             <textarea  id = 'newCardAnswer' maxlength="300" placeholder = 'back of card'></textarea>
           </div><br>
-          <!--<p class = 'label'> upload an image (optional): </p>
-           <div id="dropArea" class="drop-area">
-            <div class="drop-message">Drag & Drop Image Here</div>
+          <p class = 'label'> upload an image (optional): </p>
+          <div class="horContainer">
             <input type="file" id="fileInput" accept="image/*">
-          </div> -->
-          <div class = 'horContainer'>
-            <button id = 'saveCreateFlashcard' onclick = 'saveAddFlashcard()'> save </button>
           </div>
-          
+          <div class = 'horContainer'>
+            <button id = 'saveCreateFlashcard' onclick = 'saveAddCard()'> save </button>
+          </div>
         </div>
       </div>
     </div>
