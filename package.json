@@ -19,7 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "electron-json-storage": "^4.6.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
@@ -29,7 +30,6 @@
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "electron": "26.2.2",
-    "electron-prebuilt-compile": "^2.0.0",
-    "jquery": "^3.7.1"
+    "electron-prebuilt-compile": "^2.0.0"
   }
 }

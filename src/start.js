@@ -1,4 +1,7 @@
 const fs = require('fs'); 
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+
 
 function onload() {
     document.documentElement.style.overflowY = 'hidden';
@@ -522,6 +525,7 @@ document.getElementById('flashcardSortBy').addEventListener('change', function()
 // Open Edit Card
 let currentOpenedCardToEdit;
 function openEditCard(cardID) {
+    document.getElementById('dragDropInstruct').innerHTML = 'Drag & drop an image here to upload';
     currentOpenedCardToEdit = cardID;
     const editFlashcardAlertContainer = document.querySelector('.editFlashcardAlertContainer');
     editFlashcardAlertContainer.classList.add('fade-in');
@@ -584,6 +588,104 @@ function findCardById(setId, cardId) {
         });
 }
 
+//Event listener for image input editting
+let currentUploadedImageFileToChange;
+function parseImageToFileTypeToChange(files) {
+    currentUploadedImageFileToChange = files;
+    document.getElementById('dragDropInstruct').innerHTML = 'Image Received';
+}
+
+//Drag and Drop Edit Card
+const dropZone = document.getElementById('dropZone');
+
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+
+dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('dragover');
+});
+
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  parseImageToFileTypeToChange(files);
+});
+
+//Event listener for image input Adding
+let currentUploadedImageFileToAdd;
+function parseImageToFileTypeToAdd(files) {
+    currentUploadedImageFileToAdd = files;
+    document.getElementById('dragDropInstructAdd').innerHTML = 'Image Received';
+}
+
+//Drag and Drop Edit Card
+const dropZoneAdd = document.getElementById('dropZoneAdd');
+
+dropZoneAdd.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZoneAdd.classList.add('dragover');
+});
+
+dropZoneAdd.addEventListener('dragleave', () => {
+    dropZoneAdd.classList.remove('dragover');
+});
+
+dropZoneAdd.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZoneAdd.classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  parseImageToFileTypeToAdd(files);
+});
+
+  
+//Remove Image
+function remove() {
+    try {
+        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        let dataArray = JSON.parse(data); // Parse JSON data
+
+        // Find the index of the set to edit
+        const setIndex = dataArray.findIndex(set => set.setId === currOpenedSetToView);
+
+        if (setIndex !== -1) {
+            const set = dataArray[setIndex];
+            const cardIndex = set.cards.findIndex(card => card.cardId === currentOpenedCardToEdit);
+
+            if (cardIndex !== -1) {
+                // Delete the original image if it exists
+                if (set.cards[cardIndex].imgPath) {
+                    fs.unlink(set.cards[cardIndex].imgPath, (err) => {
+                        if (err) console.error('Error deleting original image:', err);
+                        console.log('Original image deleted successfully');
+                    });
+                }
+
+                // Remove the imgPath property from the card
+                delete set.cards[cardIndex].imgPath;
+
+                // Save data back to sets.json file
+                try {
+                    fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                    console.log(`Card with ID ${currentOpenedCardToEdit} deleted from set ${currentOpenedSetToEdit}.`);
+                    readAndDisplayCards();
+                } catch (err) {
+                    console.error(err);
+                }
+            } else {
+                console.error(`Card with ID ${currentOpenedCardToEdit} not found in set ${currentOpenedSetToEdit}.`);
+            }
+        } else {
+            console.error(`Set with ID ${currentOpenedSetToEdit} not found.`);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+    closeEditFlashcard();
+}
+
 // Save Edit Card
 function saveEditFlashcard() {
     const changedCardQuestion = document.getElementById('changedCardQuestion').value; // Get Question
@@ -606,24 +708,99 @@ function saveEditFlashcard() {
                 console.error(`Card with ID ${currentOpenedCardToEdit} not found in set ${set.setId}.`);
                 return;
             }
+            
+            let imagePath;
+            let uniqueFileName;
 
-            // Update card question and answer
-            card.question = changedCardQuestion;
-            card.answer = changedCardAnswer;
-
-            // Save data to sets.json file
-            try {
-                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
-                readAndDisplayCards();
-                console.log("File written");
-            } catch (err) {
-                console.error(err);
+            if (currentUploadedImageFileToChange && currentUploadedImageFileToChange !== '') 
+            {
+                const file = currentUploadedImageFileToChange[0];
+                uniqueFileName = `${uuidv4()}-${currentUploadedImageFileToChange.name}`;
+                imagePath = path.join(__dirname, 'cardImages', uniqueFileName);
+        
+                fs.copyFile(file.path, imagePath, (err) => {
+                    if (err) throw err;
+                    console.log('New image copied successfully');
+                    
+                    // Delete the original image
+                    if (card.imgPath) {
+                        fs.unlink(card.imgPath, (err) => {
+                            if (err) console.error('Error deleting original image:', err);
+                            console.log('Original image deleted successfully');
+                        });
+                    }
+        
+                    // Update card question and answer
+                    card.question = changedCardQuestion;
+                    card.answer = changedCardAnswer;
+                    card.imgPath = imagePath; // Update imgPath with the new path
+        
+                    // Save data to sets.json file
+                    try {
+                        fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                        readAndDisplayCards();
+                        console.log("File written");
+                    } catch (err) {
+                        console.error(err);
+                    }
+                });
+            } else {
+                // If no new image is uploaded, update card question and answer only
+                card.question = changedCardQuestion;
+                card.answer = changedCardAnswer;
+        
+                // Save data to sets.json file
+                try {
+                    fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                    readAndDisplayCards();
+                    console.log("File written");
+                } catch (err) {
+                    console.error(err);
+                }
             }
-        })
-        .catch(error => console.error('Error:', error));
+        
+            closeEditFlashcard();        
+        }); 
+}
 
+//Delete Card
+function deleteCard() {
+    try {
+        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        let dataArray = JSON.parse(data); // Parse JSON data
+
+        // Find the index of the set to edit
+        const setIndex = dataArray.findIndex(set => set.setId === currOpenedSetToView);
+
+        if (setIndex !== -1) {
+            const set = dataArray[setIndex];
+            const cardIndex = set.cards.findIndex(card => card.cardId === currentOpenedCardToEdit);
+
+            if (cardIndex !== -1) {
+                // Remove the card from the cards array
+                set.cards.splice(cardIndex, 1);
+
+                // Save data back to sets.json file
+                try {
+                    fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                    console.log(`Card with ID ${currentOpenedCardToEdit} deleted from set ${currentOpenedSetToEdit}.`);
+                    readAndDisplayCards();
+                } catch (err) {
+                    console.error(err);
+                }
+            } else {
+                console.error(`Card with ID ${currentOpenedCardToEdit} not found in set ${currentOpenedSetToEdit}.`);
+            }
+        } else {
+            console.error(`Set with ID ${currentOpenedSetToEdit} not found.`);
+        }
+    } catch (err) {
+        console.error(err);
+    }
     closeEditFlashcard();
 }
+
+
 
 // Close Edit Card
 function closeEditFlashcard() {
@@ -651,7 +828,8 @@ function openAddCard() {
 function saveAddCard() {
     const newCardQuestion = document.getElementById('newCardQuestion').value; // Get new question
     const newCardAnswer = document.getElementById('newCardAnswer').value; // Get new answer
-
+    //Saving image
+        
     try {
         const data = fs.readFileSync('src/sets.json'); // Read sets.json
         const dataArray = JSON.parse(data); // Parse JSON data
@@ -660,6 +838,22 @@ function saveAddCard() {
         const setToUpdate = dataArray.find(set => set.setId === currOpenedSetToView);
 
         if (setToUpdate) {
+            let imagePath;
+            let uniqueFileName;
+            if (currentUploadedImageFileToAdd && currentUploadedImageFileToAdd != '')
+            {
+                const file = currentUploadedImageFileToAdd[0];
+                // Generate a unique filename using UUID
+                uniqueFileName = `${uuidv4()}-${currentUploadedImageFileToAdd.name}`;
+                imagePath = path.join(__dirname, 'cardImages', uniqueFileName);
+
+                // Copy the file to the specified folder
+                fs.copyFile(file.path, imagePath, (err) => {
+                    if (err) throw err;
+                    
+                });
+            }
+            
             // Generate a new card ID (You may need to implement a proper ID generation logic)
             const newCardId = generateNewCardId(setToUpdate);
 
@@ -670,6 +864,10 @@ function saveAddCard() {
                 "learned": false,
                 "question": newCardQuestion,
             };
+            
+            if (currentUploadedImageFileToAdd && currentUploadedImageFileToAdd !== '') {
+                newCard.imgPath = imagePath;
+            }
 
             // Push the new card to the cards array of the set
             setToUpdate.cards.push(newCard);
@@ -715,7 +913,7 @@ function generateNewCardId(set) {
 function closeAddCard() {
     const addFlashcardAlertContainer = document.querySelector('.addFlashcardAlertContainer');
     addFlashcardAlertContainer.classList.add('fade-out');
-
+    currentUploadedImageFile = '';
     setTimeout(function() {
         addFlashcardAlertContainer.classList.remove('fade-out');
         addFlashcardAlertContainer.style.display = 'none';
@@ -750,3 +948,4 @@ function backToSets()
         document.getElementById('allSetsContainerContainer').classList.remove('slide-in-left');
     }, 700);
 }
+

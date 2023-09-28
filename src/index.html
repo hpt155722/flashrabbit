@@ -56,14 +56,13 @@
             <div class = 'horContainer'>
               <input id = 'changeInput' maxlength="20" placeholder="enter new name">
             </div>
-            <!-- Save Button -->
-            <div class = 'horContainer'>
-              <button id = 'saveChanged' onclick = 'saveEditSetName()'> save </button>
-            </div>
-            <!-- Delete Button -->
-            <div style = 'display: flex;'>
-              <img id = 'deleteSet' onclick = 'deleteSet()' src = 'icons/trash.png'> 
-            </div>
+            <!-- Save and Delete Button -->
+            <div style='display: flex; align-items: center; justify-content: space-between;'>
+              <div style='display: flex; align-items: center;'>
+                  <img id='deleteSet' onclick='deleteSet()' src='icons/trash.png' style='position: relative; bottom: 0; left: 0;'>
+              </div>
+              <button id='saveEditSetName' onload='saveEditSetName()' style='text-align: center;'>Save</button>
+          </div>
           </div>
         </div>
       </div>
@@ -125,20 +124,24 @@
           <p class = 'label'> edit back of card: </p>
           <div class = 'horContainer'>
             <textarea id = 'changedCardAnswer' maxlength="300"></textarea>
+          </div> <br>
+          <div class="horContainer">
+            <div id="dropZone">
+              <p id = 'dragDropInstruct' class = 'label'>Drag & drop an image here to upload</p>
+              <input type="file" id="changedImage" accept="image/*" style="display: none;">
+            </div>
           </div>
-           <!-- <p class = 'label'> replace image: </p>
-          <div id="dropArea" class="drop-area">
-            <div class="drop-message">Drag & Drop Image Here</div>
-            <input type="file" id="fileInput" accept="image/*">
-          </div> -->
-          <!-- Save Button -->
-          <div class = 'horContainer'>
-            <button id = 'saveFlashCardEdit' onclick = 'saveEditFlashcard()'> save </button>
+          <p id = 'removeImage' onclick = 'remove()'> Remove Image</p>
+          <!-- Save and Delete Button -->
+          <div style='display: flex; align-items: center; justify-content: space-between;'>
+              <div style='display: flex; align-items: center;'>
+                  <img id='deleteCard' onclick='deleteCard()' src='icons/trash.png' style='position: relative; bottom: 0; left: 0;'>
+              </div>
+              <button id='saveFlashCardEdit' onclick='saveEditFlashcard()' style='text-align: center;'>Save</button>
           </div>
-          <!-- Delete Button -->
-          <div style = 'display: flex;'>
-            <img id = 'deleteSet' onclick = 'deleteSet()' src = 'icons/trash.png'> 
-          </div>
+        
+          
+          
         </div>
       </div>
     </div>
@@ -164,7 +167,10 @@
           </div><br>
           <p class = 'label'> upload an image (optional): </p>
           <div class="horContainer">
-            <input type="file" id="fileInput" accept="image/*">
+            <div id="dropZoneAdd">
+              <p id = 'dragDropInstructAdd' class = 'label'>Drag & drop an image here to upload</p>
+              <input type="file" id="addedImage" accept="image/*" style="display: none;">
+            </div>
           </div>
           <div class = 'horContainer'>
             <button id = 'saveCreateFlashcard' onclick = 'saveAddCard()'> save </button>

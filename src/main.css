@@ -29,7 +29,8 @@ html, body {
 @media (hover: hover) {
   button:hover, .setEditIcon:hover, .exitIcon:hover, 
   .setContainer:hover, .setEditIcon:hover, .cardEditIcon:hover,
-  .backButton:hover, select:hover, #deleteSet:hover, #deleteCard:hover  {
+  .backButton:hover, select:hover, #deleteSet:hover, #deleteCard:hover,
+  #removeImage:hover  {
       opacity: .5;
       cursor: pointer;
   }
@@ -288,6 +289,22 @@ html, body {
     width: 4vh;
     margin: 0 0 4vh 4vh;
   }
+  #dropZone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  #dropZone.dragover {
+    background-color: #f9f9f9;
+  }
+  #removeImage
+  {
+    color:#ffd6ee;
+    font-size: 1.7vh;
+  }
 }
 
 @media (orientation: portrait) {
@@ -474,7 +491,7 @@ html, body {
     border-radius: 3vw;
     font-family: nexa;
     text-align: center;
-    font-size: 2.2vw;
+    font-size: 2vh;
     padding: 1vw 1.5vw 1vw 1.5vw;
   }
   textArea
@@ -504,8 +521,26 @@ html, body {
   }
   #deleteSet, #deleteCard
   {
-    width: 4vw;
+    width: 3vw;
     margin: 0 0 4vw 4vw;
+  }
+  
+  #dropZone, #dropZoneAdd {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 3vw 0 3vw;
+  }
+  
+  #dropZone.dragover, #dropZoneAdd.dragover {
+    background-color: #f9f9f9;
+  }
+  #removeImage
+  {
+    color:#ffd6ee;
+    font-size: 1.7vh;
   }
 
 }
