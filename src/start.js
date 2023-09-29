@@ -6,6 +6,10 @@ const { v4: uuidv4 } = require('uuid');
 
 function onload() {
     document.documentElement.style.overflowY = 'hidden';
+
+    document.querySelector('.pinkCover').style.display = 'block';
+    document.querySelector('.logo').style.display = 'none';
+
     //START ANIMATIONS
     document.getElementById('cloud1').classList.add('slide-left');
     document.getElementById('cloud2').classList.add('slide-right');
@@ -26,6 +30,33 @@ function onload() {
     document.getElementById('allFlashcardsContainerContainer').style.display = 'none';
     document.getElementById('entireQuizContainer').style.display = 'none';
     document.getElementById('backToFlashcardsButton').style.display = 'none';
+
+    
+    //logo
+    setTimeout(() => {
+        document.querySelector('.logo').style.display = 'block';
+        document.querySelector('.logo').classList.add('flip-in-hor-bottom');
+    }, 500);
+    
+    setTimeout(() => {
+        document.querySelector('.logo').classList.remove('flip-in-hor-bottom');
+        document.querySelector('.logo').classList.add('flip-out-hor-bottom');
+    }, 1500);
+
+    setTimeout(() => {
+        document.querySelector('.pinkCover').classList.add('fade-out');
+        document.querySelector('.logo').style.display = 'none';
+        document.querySelector('.logo').classList.remove('flip-out-hor-bottom');
+    }, 2300);
+
+    setTimeout(() => {
+
+        document.querySelector('.pinkCover').style.display = 'none';
+        document.querySelector('.pinkCover').classList.remove('fade-out');
+    }, 2800);
+    
+
+    
     
 }
 
@@ -1035,7 +1066,9 @@ function displayNextCardInArray() {
     document.getElementById('cardFaceAnswer').style.display = 'none';
     document.getElementById('backToFlashCardListView').style.display = 'none';
     document.getElementById('rightWrongContainer').style.display = 'none';
-    document.querySelector('.quizCardContainer').classList.add('hovered');
+    document.querySelector('.quizCardImg').style.display = 'none';
+    document.querySelector('.quizCardImg').removeAttribute('src');
+
     
     if (quizArray.length === 0)
     {
@@ -1057,6 +1090,10 @@ function displayNextCardInArray() {
                     const cardId = quizArray[0];
                     const card = set.cards.find(card => card.cardId === cardId);
                     if (card) {
+                        if (card.imgPath && card.imgPath != '')
+                        {
+                            document.querySelector('.quizCardImg').src = card.imgPath;
+                        }
                         // Display the card question
                         document.getElementById('cardFaceQuestion').innerHTML = card.question;
                         // Display the card answer (assuming 'cardFaceAnswer' is the ID of the element)
@@ -1083,7 +1120,6 @@ function displayNextCardInArray() {
 let questionTime;
 function showAnswer()
 {
-    document.querySelector('.quizCardContainer').classList.remove('hovered');
     if (questionTime)
     {
         questionTime = false;
@@ -1091,16 +1127,18 @@ function showAnswer()
         document.getElementById('cardFaceAnswer').classList.add('fade-in');
         document.getElementById('rightWrongContainer').style.display = 'flex';
         document.getElementById('rightWrongContainer').classList.add('fade-in');
+        document.querySelector('.quizCardImg').style.display = 'block';
+        document.querySelector('.quizCardImg').classList.add('fade-in');
     }
     setTimeout(() => {
         document.getElementById('cardFaceAnswer').classList.remove('fade-in');
         document.getElementById('rightWrongContainer').classList.remove('fade-in');
+        document.querySelector('.quizCardImg').classList.remove('fade-in');
     }, 300);
 }
 
 function recalculateQuizArray(right)
 {
-    
     if (right)
     {
         quizArray.shift();

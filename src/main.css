@@ -36,11 +36,15 @@ html, body {
   }
 }
 
-.hovered:hover {
-  cursor: pointer;
-  opacity: .5;
+.pinkCover {
+  background-color: #ffe3f5;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 998;
 }
-
 
 .cover {
   width: 100%;
@@ -354,6 +358,11 @@ html, body {
     text-align: center;
     border-radius: 5vh;
   }
+  .logo
+  {
+    width: 35vw;
+    z-index: 999;
+  }
 }
 
 @media (orientation: portrait) {
@@ -629,5 +638,16 @@ html, body {
     width: 100%;
     text-align: center;
     border-radius: 5vh;
+  }
+  .quizCardImg
+  {
+    width: 50vw;
+    border-radius: 5vh;
+    margin: 0 0 3vw 0;
+  }
+  .logo
+  {
+    width: 50vw;
+    z-index: 999;
   }
 }
