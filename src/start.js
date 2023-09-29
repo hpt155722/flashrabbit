@@ -1,5 +1,6 @@
 const fs = require('fs'); 
 const path = require('path');
+const { setTimeout } = require('timers');
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -203,7 +204,6 @@ function openEditSetName(setID) {
 }
 
 // Save Edit Set Name
-// Save Edit Set Name
 function saveEditSetName() {
     const curr = currentOpenedSetToEdit;
     // Make sure we cannot click twice
@@ -215,7 +215,6 @@ function saveEditSetName() {
         .then(data => {
             const dataArray = data; // Assign the fetched data to dataArray
             
-            // Change set name
             dataArray.forEach(set => { // Changed variable name from data to set
                 if (set.setId === curr) {
                     console.log('true');
@@ -939,11 +938,14 @@ function backToSets()
 {
     document.getElementById('flashcardPageHeader').classList.add('slide-out-right');
     document.getElementById('allFlashcardsContainerContainer').classList.add('slide-out-right');
+    document.getElementById('quizOptionContainer').classList.add('slide-out-right');
     
 
     setTimeout(function() {
         document.getElementById('flashcardPageHeader').style.display = 'none';
         document.getElementById('flashcardPageHeader').classList.remove('slide-out-right');
+        document.getElementById('quizOptionContainer').style.display = 'none';
+        document.getElementById('quizOptionContainer').classList.remove('slide-out-right');
         document.getElementById('allFlashcardsContainerContainer').style.display = 'none';
         document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-out-right');
 
@@ -991,28 +993,127 @@ function moveToQuiz()
     }, 600);
 }
 
+//Shuffle quiZArray
+function shuffleArray() {
+    for (let i = quizArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [quizArray[i], quizArray[j]] = [quizArray[j], quizArray[i]];
+    }
+}
+
 //Prepare the array for Quiz
 let quizArray;
-function prepareQuizAllArray()
-{
+function prepareQuizArray(unlearned) {
     try {
         const data = fs.readFileSync('src/sets.json');
         const sets = JSON.parse(data);
 
-        const set = sets.find(set => set.setId === setID);
-
+        const set = sets.find(set => set.setId === currOpenedSetToView);
+        
         if (set) {
-            return set.cards.map(card => card.cardId);
+            if (unlearned) {
+                quizArray = set.cards
+                    .filter(card => !card.learned) // Filter out learned cards
+                    .map(card => card.cardId);
+            } else {
+                quizArray = set.cards.map(card => card.cardId);
+            }
         } else {
-            console.error(`Set with ID ${setID} not found.`);
+            console.error(`Set with ID ${currOpenedSetToView} not found.`);
             return [];
         }
     } catch (err) {
         console.error(err);
         return [];
     }
+    displayNextCardInArray();
+}
+
+function displayNextCardInArray() {
+    shuffleArray();
+
+    document.getElementById('cardFaceAnswer').style.display = 'none';
+    document.getElementById('backToFlashCardListView').style.display = 'none';
+    document.getElementById('rightWrongContainer').style.display = 'none';
+    document.querySelector('.quizCardContainer').classList.add('hovered');
+    
+    if (quizArray.length === 0)
+    {
+        document.getElementById('cardFaceQuestion').innerHTML = "YOU'VE COMPLETED LEARNING THIS SET!<br>ʕ•́ᴥ•̀ʔっ";
+        document.getElementById('backToFlashCardListView').style.display = 'block';
+    }
+    else
+    {
+        try {
+            const data = fs.readFileSync('src/sets.json');
+            const sets = JSON.parse(data);
+
+            const set = sets.find(set => set.setId === currOpenedSetToView);
+            
+            // Check if there is a set with the given ID
+            if (set) {
+                // Check if there are cards in the set
+                if (quizArray.length > 0) {
+                    const cardId = quizArray[0];
+                    const card = set.cards.find(card => card.cardId === cardId);
+                    if (card) {
+                        // Display the card question
+                        document.getElementById('cardFaceQuestion').innerHTML = card.question;
+                        // Display the card answer (assuming 'cardFaceAnswer' is the ID of the element)
+                        document.getElementById('cardFaceAnswer').innerHTML = card.answer;
+                    } else {
+                        console.error(`Card with ID ${cardId} not found in set ${currOpenedSetToView}.`);
+                    }
+                } else {
+                    console.error('Quiz array is empty.');
+                }
+            } else {
+                console.error(`Set with ID ${currOpenedSetToView} not found.`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        setTimeout(() => {
+            questionTime = true;
+        }, 500);
+    }
     
 }
+
+let questionTime;
+function showAnswer()
+{
+    document.querySelector('.quizCardContainer').classList.remove('hovered');
+    if (questionTime)
+    {
+        questionTime = false;
+        document.getElementById('cardFaceAnswer').style.display = 'block';
+        document.getElementById('cardFaceAnswer').classList.add('fade-in');
+        document.getElementById('rightWrongContainer').style.display = 'flex';
+        document.getElementById('rightWrongContainer').classList.add('fade-in');
+    }
+    setTimeout(() => {
+        document.getElementById('cardFaceAnswer').classList.remove('fade-in');
+        document.getElementById('rightWrongContainer').classList.remove('fade-in');
+    }, 300);
+}
+
+function recalculateQuizArray(right)
+{
+    
+    if (right)
+    {
+        quizArray.shift();
+    }
+    else
+    {
+        quizArray.push(quizArray[0]);
+        quizArray.push(quizArray[0]);
+        quizArray.shift();
+    }   
+    displayNextCardInArray();
+}
+
 
 function backToFlashcards()
 {

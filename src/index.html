@@ -105,8 +105,8 @@
   
   <!-- Quiz Option Container -->
   <div class = 'horContainer' id = 'quizOptionContainer'>
-    <div class = 'quizButton' id = 'moveToQuizAll' onclick = 'moveToQuiz(); prepareQuizArray();'style = 'background-color: #ffbdba;'> ♡ Quiz All ♡ </div>
-    <div class = 'quizButton' id = 'moveToQuizUnlearned' onclick = 'moveToQuiz(); prepareQuizArray()'> ☆ Quiz Unlearned ☆ </div>
+    <div class = 'quizButton' id = 'moveToQuizAll' onclick = 'moveToQuiz(); prepareQuizArray(false);'style = 'background-color: #ffbdba;'> ♡ Quiz All ♡ </div>
+    <div class = 'quizButton' id = 'moveToQuizUnlearned' onclick = 'moveToQuiz(); prepareQuizArray(true)'> ☆ Quiz Unlearned ☆ </div>
   </div>
   <!-- Flashcards Container -->
   <div id = 'allFlashcardsContainerContainer' class = 'horContainer'>
@@ -188,13 +188,19 @@
   <img id = 'backToFlashcardsButton' class = 'backButton' onclick = 'backToFlashcards()' src = 'icons/back.png'>
   <div class = 'verContainer' id = 'entireQuizContainer' style = 'height: 90%;'>
     <div class = 'horContainer'>
-      <div class = 'quizCardContainer'>
-
+      <div class = 'quizCardContainer' onclick = 'showAnswer()'>
+        <div class = 'verContainer'>
+          <p id = 'cardFaceQuestion' style = 'color: #45404b'> TESTING </p>
+          <h2 id = 'cardFaceAnswer' style = 'color: #45404b; font-family: nexa; text-align: center'> ANSWER ANSWER ANSWER ANSWER ANSWER </h2>
+          <div class = 'horContainer' id = 'rightWrongContainer'>
+            <div class = 'rightWrong' onclick = 'recalculateQuizArray(true)' style = 'background-color: #dde4da;' > I got that right </div>
+            <div class = 'rightWrong' onclick = 'recalculateQuizArray(false)' style = 'background-color: #ffe3f5;'> I got that wrong </div>
+          </div>
+          <button id = 'backToFlashCardListView' onclick = 'backToFlashcards()'> ← back to set </button>
+        </div>
       </div>
     </div>
   </div>
-  
-    
 
     <!-- Import Login Script -->
     <script src="start.js"></script>

@@ -30,11 +30,17 @@ html, body {
   button:hover, .setEditIcon:hover, .exitIcon:hover, 
   .setContainer:hover, .setEditIcon:hover, .cardEditIcon:hover,
   .backButton:hover, select:hover, #deleteSet:hover, #deleteCard:hover,
-  #removeImage:hover, .quizButton:hover  {
+  #removeImage:hover, .quizButton:hover, .rightWrong:hover {
       opacity: .5;
       cursor: pointer;
   }
 }
+
+.hovered:hover {
+  cursor: pointer;
+  opacity: .5;
+}
+
 
 .cover {
   width: 100%;
@@ -77,6 +83,10 @@ html, body {
 
 
 @media (orientation: landscape) {
+  html, body {
+    background-image: url('images/horBackground.png');
+    background-size: cover;
+  }
   h1
   {
     font-family: happy;
@@ -166,10 +176,9 @@ html, body {
   h2
   {
     color: white;
-    font-size: 3.3vh;
+    font-size: 3vh;
     font-family: nexaHeavy;
     margin: 3vh 4vh;
-    width: 5vw;
   }
   .learnedCardsInfo
   {
@@ -309,9 +318,49 @@ html, body {
     color:#ffd6ee;
     font-size: 1.7vh;
   }
+  
+  .quizOptionContainer
+  {
+    margin: 1vh 2vh 2vh 3vh;
+
+  }
+  .quizButton
+  {
+    background-color: #ddc6ff;
+    color:#3b3d41;
+    font-family: nexaHeavy;
+    font-size: 1.8vh;
+    padding: 2vh;
+    margin: 2vh;
+    width: 100%;
+    text-align: center;
+    border-radius: 5vh;
+  }
+  .quizCardContainer
+  {
+    width: 90vh;
+    height: auto;
+    background-color: rgb(215, 197, 255);
+    border-radius: 6vh;
+  }
+  .rightWrong
+  {
+    color:#3b3d41;
+    font-family: nexaHeavy;
+    font-size: 1.8vh;
+    padding: 1.2vh;
+    margin: 3vh;
+    width: 100%;
+    text-align: center;
+    border-radius: 5vh;
+  }
 }
 
 @media (orientation: portrait) {
+  html, body {
+    background-image: url('images/verBackgorund.png');
+    background-size: cover;
+  }
   h1
   {
     font-family: happy;
@@ -566,8 +615,19 @@ html, body {
   .quizCardContainer
   {
     width: 90vw;
-    height: 30vh;
+    height: auto;
     background-color: rgb(215, 197, 255);
     border-radius: 6vh;
+  }
+  .rightWrong
+  {
+    color:#3b3d41;
+    font-family: nexaHeavy;
+    font-size: 1.8vh;
+    padding: 1.2vh;
+    margin: 3vh;
+    width: 100%;
+    text-align: center;
+    border-radius: 5vh;
   }
 }
