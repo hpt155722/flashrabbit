@@ -61,7 +61,7 @@
               <div style='display: flex; align-items: center;'>
                   <img id='deleteSet' onclick='deleteSet()' src='icons/trash.png' style='position: relative; bottom: 0; left: 0;'>
               </div>
-              <button id='saveEditSetName' onload='saveEditSetName()' style='text-align: center;'>Save</button>
+              <button id='saveEditSetName' onclick='saveEditSetName()' style='text-align: center;'>Save</button>
           </div>
           </div>
         </div>
@@ -102,12 +102,14 @@
         <option value="Unlearned First">Unlearned First</option>
       </select>      
     </div>
-
+  
+  <!-- Quiz Container -->
   <!-- Flashcards Container -->
   <div id = 'allFlashcardsContainerContainer' class = 'horContainer'>
     <div id = 'allFlashcardsContainer'> </div>
   </div>
-
+  <!-- Flashcards Container -->
+  
   <!-- Edit Flashcard Name -->
   <div class = 'editFlashcardAlertContainer'>
     <div class = 'horContainer alertContainer' style = 'height: 100%;'>
@@ -159,7 +161,7 @@
           <p> ☁️ create a card ☁️ </p>
           <p class = 'label'> enter front of card: </p>
           <div class = 'horContainer'>
-            <textarea  id = 'newCardQuestion' maxlength="300" placeholder = 'front of card'></textarea>
+            <textarea  id = 'newCardQuestion' maxlength="300" placeholder = 'enter a question'></textarea>
           </div> 
           <p class = 'label'> enter back of card: </p>
           <div class = 'horContainer'>

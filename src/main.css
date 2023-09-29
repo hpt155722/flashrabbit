@@ -289,15 +289,16 @@ html, body {
     width: 4vh;
     margin: 0 0 4vh 4vh;
   }
-  #dropZone {
+  #dropZone, #dropZoneAdd {
     border: 2px dashed #ccc;
     border-radius: 8px;
     padding: 20px;
     text-align: center;
     cursor: pointer;
+    margin: 0 3vh 0 3vh;
   }
   
-  #dropZone.dragover {
+  #dropZone.dragover, #dropZoneAdd.dragover {
     background-color: #f9f9f9;
   }
   #removeImage
@@ -381,8 +382,8 @@ html, body {
   h4
   {
     color: rgb(67, 62, 62);
-    font-size: 2.5vw;
-    font-family: nexaHeavy;
+    font-size: 3vw;
+    font-family: nexa;
     margin: 3vw 4vw;
   }
   h3

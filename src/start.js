@@ -190,6 +190,7 @@ function createDivForData(data, total, learned) {
 // Open Edit Set Name
 let currentOpenedSetToEdit;
 function openEditSetName(setID) {
+    document.getElementById('saveEditSetName').style.display = 'block';
     currentOpenedSetToEdit = setID;
     const editSetAlertContainer = document.querySelector('.editSetAlertContainer');
     editSetAlertContainer.classList.add('fade-in');
@@ -201,33 +202,40 @@ function openEditSetName(setID) {
 }
 
 // Save Edit Set Name
+// Save Edit Set Name
 function saveEditSetName() {
-    const newName = document.getElementById('changeInput').value; // Get new name
+    const curr = currentOpenedSetToEdit;
+    // Make sure we cannot click twice
+    document.getElementById('saveEditSetName').style.display = 'none';
 
+    const newName = document.getElementById('changeInput').value; // Get new name
     fetch('sets.json')
         .then(response => response.json())
         .then(data => {
             const dataArray = data; // Assign the fetched data to dataArray
-
+            
             // Change set name
-            dataArray.forEach(data => {
-                if (data.setId === currentOpenedSetToEdit) {
-                    data.setName = newName;
+            dataArray.forEach(set => { // Changed variable name from data to set
+                if (set.setId === curr) {
+                    console.log('true');
+                    set.setName = newName;
                 }
             });
 
             // Save data to sets.json file
             try {
                 fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
-                readAndDisplay();
                 console.log("File written");
+
+                // Move readAndDisplay inside here
+                readAndDisplay();
             } catch (err) {
                 console.error(err);
             }
         })
         .catch(error => console.error('Error:', error));
 
-    closeEditSetName();
+        closeEditSetName();
 }
 
 //Delete Set
@@ -277,6 +285,7 @@ function closeEditSetName() {
 
 // Open Add Set
 function openAddSet() {
+    document.getElementById('saveChanged').style.display = 'block';
     const addSetAlertContainer = document.querySelector('.addSetAlertContainer');
     addSetAlertContainer.classList.add('fade-in');
     addSetAlertContainer.style.display = 'block';
@@ -288,7 +297,9 @@ function openAddSet() {
 
 // Save Add Set
 function saveAddSet() {
-    document.getElementById('saveChanged').hide();
+    //Make sure we cannot click twice
+    document.getElementById('saveChanged').style.display = 'none';
+
     const newName = document.getElementById('newNameCreated').value; // Get new name
 
     try {
@@ -379,12 +390,12 @@ function moveToFlashcards(setID, setName) {
         document.getElementById('flashcardPageHeader').classList.add('slide-in-right');
         document.getElementById('allFlashcardsContainerContainer').style.display = 'flex';
         document.getElementById('allFlashcardsContainerContainer').classList.add('slide-in-right');
-    }, 400);
+    }, 350);
 
     setTimeout(function() {
         document.getElementById('flashcardPageHeader').classList.remove('slide-in-right');
         document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-in-right');
-    }, 700);
+    }, 650);
 }
 
 //Read and Display Cards
@@ -446,12 +457,12 @@ function createCardDiv(card) {
 
     cardDiv.innerHTML = `
         
-        <div style = 'display: flex; justify-content: space-between;'>
-            <div style = 'display: flex; flex-direction: column;text-align: left;'>
-                <h3> ${card.question} </h3>
-                <h4> ${card.answer} </h4>
-            </div>
-            <div style = 'text-align: right;'> ${imageElement} </div>
+        <div style = 'display: flex; flex-direction: column;text-align: left;'>
+            <h3> ${card.question} </h3>
+            <h4> ${card.answer} </h4>
+        </div>
+        <div class = 'horContainer'>
+            ${imageElement}
         </div>
         <div style = 'width: 90%; height: 7vh;' play: flex; justify-content: space-between;> 
             <div class = 'learnedBox' style = 'display: flex'>
@@ -669,7 +680,7 @@ function remove() {
                 // Save data back to sets.json file
                 try {
                     fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
-                    console.log(`Card with ID ${currentOpenedCardToEdit} deleted from set ${currentOpenedSetToEdit}.`);
+                    console.log(`Card with ID ${currentOpenedCardToEdit} deleted from set ${currOpenedSetToView}.`);
                     readAndDisplayCards();
                 } catch (err) {
                     console.error(err);
@@ -806,6 +817,7 @@ function deleteCard() {
 function closeEditFlashcard() {
     const editFlashcardAlertContainer = document.querySelector('.editFlashcardAlertContainer');
     editFlashcardAlertContainer.classList.add('fade-out');
+    currentUploadedImageFileToChange = '';
 
     setTimeout(function() {
         editFlashcardAlertContainer.classList.remove('fade-out');
@@ -819,6 +831,11 @@ function openAddCard() {
     addFlashcardAlertContainer.classList.add('fade-in');
     addFlashcardAlertContainer.style.display = 'block';
     
+    document.getElementById('newCardQuestion').value = '';
+    document.getElementById('newCardAnswer').value = '';
+    document.getElementById('newCardQuestion').placeholder = 'enter a question';
+    document.getElementById('newCardAnswer').placeholder = 'enter an answer';
+
     setTimeout(function() {
         addFlashcardAlertContainer.classList.remove('fade-in');
     }, 500);
@@ -913,7 +930,7 @@ function generateNewCardId(set) {
 function closeAddCard() {
     const addFlashcardAlertContainer = document.querySelector('.addFlashcardAlertContainer');
     addFlashcardAlertContainer.classList.add('fade-out');
-    currentUploadedImageFile = '';
+    currentUploadedImageFileToAdd = '';
     setTimeout(function() {
         addFlashcardAlertContainer.classList.remove('fade-out');
         addFlashcardAlertContainer.style.display = 'none';
