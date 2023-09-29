@@ -103,12 +103,15 @@
       </select>      
     </div>
   
-  <!-- Quiz Container -->
+  <!-- Quiz Option Container -->
+  <div class = 'horContainer' id = 'quizOptionContainer'>
+    <div class = 'quizButton' id = 'moveToQuizAll' onclick = 'moveToQuiz(); prepareQuizArray();'style = 'background-color: #ffbdba;'> ♡ Quiz All ♡ </div>
+    <div class = 'quizButton' id = 'moveToQuizUnlearned' onclick = 'moveToQuiz(); prepareQuizArray()'> ☆ Quiz Unlearned ☆ </div>
+  </div>
   <!-- Flashcards Container -->
   <div id = 'allFlashcardsContainerContainer' class = 'horContainer'>
     <div id = 'allFlashcardsContainer'> </div>
   </div>
-  <!-- Flashcards Container -->
   
   <!-- Edit Flashcard Name -->
   <div class = 'editFlashcardAlertContainer'>
@@ -141,9 +144,6 @@
               </div>
               <button id='saveFlashCardEdit' onclick='saveEditFlashcard()' style='text-align: center;'>Save</button>
           </div>
-        
-          
-          
         </div>
       </div>
     </div>
@@ -183,6 +183,17 @@
     <div class = 'cover'></div>
   </div>
     
+  <!-- QUIZ PAGE -->
+
+  <img id = 'backToFlashcardsButton' class = 'backButton' onclick = 'backToFlashcards()' src = 'icons/back.png'>
+  <div class = 'verContainer' id = 'entireQuizContainer' style = 'height: 90%;'>
+    <div class = 'horContainer'>
+      <div class = 'quizCardContainer'>
+
+      </div>
+    </div>
+  </div>
+  
     
 
     <!-- Import Login Script -->

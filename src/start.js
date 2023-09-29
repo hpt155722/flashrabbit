@@ -17,13 +17,14 @@ function onload() {
     document.querySelector('.editSetAlertContainer').style.display = 'none';
     document.querySelector('.addSetAlertContainer').style.display = 'none';
     document.getElementById('allSetsContainerContainer').style.display = 'none';
+    document.getElementById('quizOptionContainer').style.display = 'none';
 
     document.getElementById('flashcardPageHeader').style.display = 'none';
     document.querySelector('.addFlashcardAlertContainer').style.display = 'none';
     document.querySelector('.editFlashcardAlertContainer').style.display = 'none';
     document.getElementById('allFlashcardsContainerContainer').style.display = 'none';
-    
-    
+    document.getElementById('entireQuizContainer').style.display = 'none';
+    document.getElementById('backToFlashcardsButton').style.display = 'none';
     
 }
 
@@ -363,9 +364,6 @@ function closeAddSetName() {
     }, 500);
 }
 
-
-
-
 // *:･ﾟ✧*:･ﾟ✧ FLASHCARD JAVASCRIPT *:･ﾟ✧*:･ﾟ✧
 
 let currOpenedSetToView; //For card view
@@ -390,11 +388,14 @@ function moveToFlashcards(setID, setName) {
         document.getElementById('flashcardPageHeader').classList.add('slide-in-right');
         document.getElementById('allFlashcardsContainerContainer').style.display = 'flex';
         document.getElementById('allFlashcardsContainerContainer').classList.add('slide-in-right');
+        document.getElementById('quizOptionContainer').style.display = 'flex';
+        document.getElementById('quizOptionContainer').classList.add('slide-in-right');
     }, 350);
 
     setTimeout(function() {
         document.getElementById('flashcardPageHeader').classList.remove('slide-in-right');
         document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-in-right');
+        document.getElementById('quizOptionContainer').classList.remove('slide-in-right');
     }, 650);
 }
 
@@ -519,7 +520,6 @@ function toggleLearned(cardId) {
         .catch(error => console.error('Error:', error));
 } 
 
-
 let cardSortBy = 'A-Z';
 document.getElementById('flashcardSortBy').addEventListener('change', function() {
     console.log('changed select');
@@ -606,7 +606,7 @@ function parseImageToFileTypeToChange(files) {
     document.getElementById('dragDropInstruct').innerHTML = 'Image Received';
 }
 
-//Drag and Drop Edit Card
+//Drag and Drop Edit Card Event Listeners
 const dropZone = document.getElementById('dropZone');
 
 dropZone.addEventListener('dragover', (e) => {
@@ -632,7 +632,7 @@ function parseImageToFileTypeToAdd(files) {
     document.getElementById('dragDropInstructAdd').innerHTML = 'Image Received';
 }
 
-//Drag and Drop Edit Card
+//Drag and Drop Add Card Event Listeners
 const dropZoneAdd = document.getElementById('dropZoneAdd');
 
 dropZoneAdd.addEventListener('dragover', (e) => {
@@ -651,7 +651,6 @@ dropZoneAdd.addEventListener('drop', (e) => {
   parseImageToFileTypeToAdd(files);
 });
 
-  
 //Remove Image
 function remove() {
     try {
@@ -811,8 +810,6 @@ function deleteCard() {
     closeEditFlashcard();
 }
 
-
-
 // Close Edit Card
 function closeEditFlashcard() {
     const editFlashcardAlertContainer = document.querySelector('.editFlashcardAlertContainer');
@@ -966,3 +963,78 @@ function backToSets()
     }, 700);
 }
 
+// *:･ﾟ✧*:･ﾟ✧ QUIZ JAVASCRIPT *:･ﾟ✧*:･ﾟ✧
+
+function moveToQuiz()
+{
+    document.getElementById('flashcardPageHeader').classList.add('slide-out-left');
+    document.getElementById('quizOptionContainer').classList.add('slide-out-left');
+    document.getElementById('allFlashcardsContainerContainer').classList.add('slide-out-left');
+
+    setTimeout(function() {
+        document.getElementById('flashcardPageHeader').style.display = 'none';
+        document.getElementById('flashcardPageHeader').classList.remove('slide-out-left');
+        document.getElementById('quizOptionContainer').style.display = 'none';
+        document.getElementById('quizOptionContainer').classList.remove('slide-out-left');
+        document.getElementById('allFlashcardsContainerContainer').style.display = 'none';
+        document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-out-left');
+
+        document.getElementById('entireQuizContainer').classList.add('slide-in-right');
+        document.getElementById('entireQuizContainer').style.display = 'flex';
+        document.getElementById('backToFlashcardsButton').classList.add('slide-in-right');
+        document.getElementById('backToFlashcardsButton').style.display = 'flex';
+    }, 300);
+
+    setTimeout(function() {
+        document.getElementById('entireQuizContainer').classList.remove('slide-in-right');
+        document.getElementById('backToFlashcardsButton').classList.remove('slide-in-right');
+    }, 600);
+}
+
+//Prepare the array for Quiz
+let quizArray;
+function prepareQuizAllArray()
+{
+    try {
+        const data = fs.readFileSync('src/sets.json');
+        const sets = JSON.parse(data);
+
+        const set = sets.find(set => set.setId === setID);
+
+        if (set) {
+            return set.cards.map(card => card.cardId);
+        } else {
+            console.error(`Set with ID ${setID} not found.`);
+            return [];
+        }
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+    
+}
+
+function backToFlashcards()
+{
+    document.getElementById('entireQuizContainer').classList.add('slide-out-right');
+    document.getElementById('backToFlashcardsButton').classList.add('slide-out-right');
+
+    setTimeout(function() {
+        document.getElementById('entireQuizContainer').style.display = 'none';
+        document.getElementById('entireQuizContainer').classList.remove('slide-out-right');
+        document.getElementById('backToFlashcardsButton').style.display = 'none';
+        document.getElementById('backToFlashcardsButton').classList.remove('slide-out-right');
+
+        document.getElementById('flashcardPageHeader').classList.add('slide-in-left');
+        document.getElementById('flashcardPageHeader').style.display = 'block';
+        document.getElementById('quizOptionContainer').classList.add('slide-in-left');
+        document.getElementById('quizOptionContainer').style.display = 'flex';
+        document.getElementById('allFlashcardsContainerContainer').classList.add('slide-in-left');
+        document.getElementById('allFlashcardsContainerContainer').style.display = 'flex';
+    }, 300);
+    setTimeout(function() {
+        document.getElementById('flashcardPageHeader').classList.remove('slide-in-left');
+        document.getElementById('quizOptionContainer').classList.remove('slide-in-left');
+        document.getElementById('allFlashcardsContainerContainer').classList.remove('slide-in-left');
+    }, 600);
+}
