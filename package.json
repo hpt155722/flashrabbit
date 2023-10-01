@@ -10,7 +10,8 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": {
@@ -40,7 +41,9 @@
     "directories": {
       "output": "dist"
     },
-    "files": ["**/*"],
+    "files": [
+      "**/*"
+    ],
     "win": {
       "target": "nsis",
       "icon": "src/icon.ico"
@@ -50,5 +53,4 @@
       "icon": "src/icon.ico"
     }
   }
-  
 }

@@ -138,7 +138,7 @@ function readAndDisplay()
     let total;
     let learned;
     // Read and display sets from set.json
-    fetch('sets.json')
+    fetch(path.join(__dirname, 'sets.json'))
         .then(response => response.json())
         .then(data => {
             const dataArray = data; // Assign the fetched data to dataArray
@@ -241,7 +241,7 @@ function saveEditSetName() {
     document.getElementById('saveEditSetName').style.display = 'none';
 
     const newName = document.getElementById('changeInput').value; // Get new name
-    fetch('sets.json')
+    fetch(path.join(__dirname, 'sets.json'))
         .then(response => response.json())
         .then(data => {
             const dataArray = data; // Assign the fetched data to dataArray
@@ -255,7 +255,7 @@ function saveEditSetName() {
 
             // Save data to sets.json file
             try {
-                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                 console.log("File written");
 
                 // Move readAndDisplay inside here
@@ -272,7 +272,7 @@ function saveEditSetName() {
 //Delete Set
 function deleteSet() {
     try {
-        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        const data = fs.readFileSync(path.join(__dirname, 'sets.json')); // Read sets.json
         let dataArray = JSON.parse(data); // Parse JSON data
 
         // Find the index of the set to delete
@@ -287,7 +287,7 @@ function deleteSet() {
 
             // Save data back to sets.json file
             try {
-                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                 console.log(`Set with ID ${currentOpenedSetToEdit} deleted.`);
                 readAndDisplay();
             } catch (err) {
@@ -328,41 +328,46 @@ function openAddSet() {
 
 // Save Add Set
 function saveAddSet() {
-    //Make sure we cannot click twice
+    // Make sure we cannot click twice
     document.getElementById('saveChanged').style.display = 'none';
 
     const newName = document.getElementById('newNameCreated').value; // Get new name
 
     try {
-        const data = fs.readFileSync('src/sets.json'); // Read sets.json
-        const dataArray = JSON.parse(data); // Parse JSON data
+        fs.readFile(path.join(__dirname, 'sets.json'), (err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
 
-        // Get the next set ID
-        const newSetId = getNextSetId(dataArray);
+            let dataArray = JSON.parse(data);
 
-        // Add a new set with setName as newName to sets.json
-        const newSet = {
-            "setId": newSetId,
-            "setName": newName,
-            "totalCards": 0,
-            "learnedCards": 0,
-            "cards": []
-        };
-        dataArray.push(newSet);
+            // Get the next set ID
+            const newSetId = getNextSetId(dataArray);
 
-        // Save data to sets.json file
-        try {
-            fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
-            readAndDisplay();
-            console.log("File written");
-        } catch (err) {
-            console.error(err);
-        }
+            // Add a new set with setName as newName to sets.json
+            const newSet = {
+                "setId": newSetId,
+                "setName": newName,
+                "totalCards": 0,
+                "learnedCards": 0,
+                "cards": []
+            };
+            dataArray.push(newSet);
 
-        // Update the displayed sets
-        readAndDisplay();
-        console.log("File written");
-
+            // Save data to sets.json file
+            fs.writeFile(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray), (err) => {
+                console.log(dataArray);
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                
+                // Update the displayed sets
+                readAndDisplay();
+                console.log("File written");
+            });
+        });
     } catch (err) {
         console.error(err);
     }
@@ -433,7 +438,7 @@ function moveToFlashcards(setID, setName) {
 function readAndDisplayCards()
 {
     // Read and display sets from set.json
-    fetch('sets.json')
+    fetch(path.join(__dirname, 'sets.json'))
         .then(response => response.json())
         .then(data => { 
             const set = data.find(item => item.setId === currOpenedSetToView);
@@ -510,7 +515,7 @@ function createCardDiv(card) {
 }
 
 function toggleLearned(cardId) {
-    fetch('sets.json')
+    fetch(path.join(__dirname, 'sets.json'))
         .then(response => response.json())
         .then(data => {
             const dataArray = data; // Assign the fetched data to dataArray
@@ -540,7 +545,7 @@ function toggleLearned(cardId) {
 
             // Save data to sets.json file
             try {
-                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                 readAndDisplayCards();
                 console.log("File written");
             } catch (err) {
@@ -573,7 +578,7 @@ function openEditCard(cardID) {
     editFlashcardAlertContainer.style.display = 'block';
 
     //SET CURRENT EDITS PLACEHOLDERS AS JSON DATA
-    fetch('sets.json')
+    fetch(path.join(__dirname, 'sets.json'))
     .then(response => response.json())
     .then(data => {
         const dataArray = data; // Assign the fetched data to dataArray
@@ -611,7 +616,7 @@ function openEditCard(cardID) {
 
 // Function to find a card by its ID
 function findCardById(setId, cardId) {
-    return fetch('sets.json')
+    return fetch(path.join(__dirname, 'sets.json'))
         .then(response => response.json())
         .then(data => {
             const set = data.find(item => item.setId === setId);
@@ -684,7 +689,7 @@ dropZoneAdd.addEventListener('drop', (e) => {
 //Remove Image
 function remove() {
     try {
-        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        const data = fs.readFileSync(path.join(__dirname, 'sets.json')); // Read sets.json
         let dataArray = JSON.parse(data); // Parse JSON data
 
         // Find the index of the set to edit
@@ -708,7 +713,7 @@ function remove() {
 
                 // Save data back to sets.json file
                 try {
-                    fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                    fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                     console.log(`Card with ID ${currentOpenedCardToEdit} deleted from set ${currOpenedSetToView}.`);
                     readAndDisplayCards();
                 } catch (err) {
@@ -731,7 +736,7 @@ function saveEditFlashcard() {
     const changedCardQuestion = document.getElementById('changedCardQuestion').value; // Get Question
     const changedCardAnswer = document.getElementById('changedCardAnswer').value; // Get Answer
 
-    fetch('sets.json')
+    fetch(path.join(__dirname, 'sets.json'))
         .then(response => response.json())
         .then(data => {
             const dataArray = data; // Assign the fetched data to dataArray
@@ -777,7 +782,7 @@ function saveEditFlashcard() {
         
                     // Save data to sets.json file
                     try {
-                        fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                        fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                         readAndDisplayCards();
                         console.log("File written");
                     } catch (err) {
@@ -791,7 +796,7 @@ function saveEditFlashcard() {
         
                 // Save data to sets.json file
                 try {
-                    fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                    fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                     readAndDisplayCards();
                     console.log("File written");
                 } catch (err) {
@@ -806,7 +811,7 @@ function saveEditFlashcard() {
 //Delete Card
 function deleteCard() {
     try {
-        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        const data = fs.readFileSync(path.join(__dirname, 'sets.json')); // Read sets.json
         let dataArray = JSON.parse(data); // Parse JSON data
 
         // Find the index of the set to edit
@@ -822,7 +827,7 @@ function deleteCard() {
 
                 // Save data back to sets.json file
                 try {
-                    fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                    fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                     console.log(`Card with ID ${currentOpenedCardToEdit} deleted from set ${currentOpenedSetToEdit}.`);
                     readAndDisplayCards();
                 } catch (err) {
@@ -875,7 +880,7 @@ function saveAddCard() {
     //Saving image
         
     try {
-        const data = fs.readFileSync('src/sets.json'); // Read sets.json
+        const data = fs.readFileSync(path.join(__dirname, 'sets.json')); // Read sets.json
         const dataArray = JSON.parse(data); // Parse JSON data
 
         // Find the set within dataArray that matches currOpenedSetToView
@@ -918,7 +923,7 @@ function saveAddCard() {
 
             // Save data to sets.json file
             try {
-                fs.writeFileSync('src/sets.json', JSON.stringify(dataArray));
+                fs.writeFileSync(path.join(__dirname, 'sets.json'), JSON.stringify(dataArray));
                 readAndDisplay();
                 console.log("File written");
             } catch (err) {
@@ -1036,7 +1041,7 @@ function shuffleArray() {
 let quizArray;
 function prepareQuizArray(unlearned) {
     try {
-        const data = fs.readFileSync('src/sets.json');
+        const data = fs.readFileSync(path.join(__dirname, 'sets.json'));
         const sets = JSON.parse(data);
 
         const set = sets.find(set => set.setId === currOpenedSetToView);
@@ -1078,7 +1083,7 @@ function displayNextCardInArray() {
     else
     {
         try {
-            const data = fs.readFileSync('src/sets.json');
+            const data = fs.readFileSync(path.join(__dirname, 'sets.json'));
             const sets = JSON.parse(data);
 
             const set = sets.find(set => set.setId === currOpenedSetToView);
