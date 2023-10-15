@@ -1,6 +1,6 @@
 # flashRabbit 
 
-In response to my sister's complaints about her flashcard app in Optometry school, I took the initiative to craft a solution. This desktop application incorporates local storage for offline usage per her request.
+In response to my sister's complaints about her flashcard app in Optometry school, I took the initiative to craft a solution. This flashcard studying desktop application incorporates local storage for offline usage per her request.
 
 <br>
 
