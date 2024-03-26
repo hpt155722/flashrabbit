@@ -1,6 +1,7 @@
 # flashRabbit 
 
-In response to my sister's complaints about her flashcard app in Optometry school, I took the initiative to craft a solution. This flashcard studying desktop application incorporates local storage for offline usage per her request.
+This desktop flashcard application utilizes local storage to enable offline usage. This implementation encompasses a range of versatile features, facilitating the creation, editing, and deletion of sets and individual cards. Additionally, it supports image uploads, quiz mode with image display, and automatic retesting of incorrectly answered cards.
+
 
 <br>
 
