@@ -8,23 +8,36 @@ This desktop flashcard application utilizes local storage to enable offline usag
 ### ☆ ───── Technologies ───── ☆
 
 <br>
-☆ HTML <br>
-☆ CSS <br>
-☆ Javascript <br>
-☆ Electron <br>
-☆ Node.js <br>
+•  HTML <br>
+•  CSS <br>
+•  Javascript <br>
+•  Electron <br>
+•  Node.js <br>
 <br>
 
 ### ☆ ───── Features ───── ☆
+<br>
+ 
+• **Local Storage and Offline Usage:**  
+ &nbsp;&nbsp;&nbsp;&nbsp;• Enables users to access the application without an internet connection.
 
+• **Create, Edit, Delete Sets:**  
+ &nbsp;&nbsp;&nbsp;&nbsp;• Allows users to manage sets of cards effectively.
+
+• **Create, Edit, Delete Cards:**  
+ &nbsp;&nbsp;&nbsp;&nbsp;• Enables users to customize and manage individual cards.
+
+•**Image Upload for Cards:**  
+ &nbsp;&nbsp;&nbsp;&nbsp;• Supports uploading images to enhance card content.
+
+• **Quiz Mode Displays Images:**  
+ &nbsp;&nbsp;&nbsp;&nbsp;• Shows images during quizzes for a more engaging experience.
+
+• **Quiz Mode Retests Cards if Answered Incorrectly:**  
+ &nbsp;&nbsp;&nbsp;&nbsp;• Ensures users revisit cards they struggled with for better retention.
+<br>
  <br>
-☆ Local storage and offline usage <br>
-☆ Create, edit, delete sets <br>
-☆ Create, edit, delete cards <br>
-☆ Image upload for cards <br>
-☆ Quiz mode displays images <br>
-☆ Quiz mode retests cards if answered incorrectly <br>
- <br>
+
  
 ### ☆ ───── Screenshots ───── ☆
 
