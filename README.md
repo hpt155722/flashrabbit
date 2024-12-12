@@ -44,10 +44,7 @@ This desktop flashcard application utilizes local storage to enable offline usag
  <br>
 
  <div>
-    <img style = "width: 20vh; margin: 5vh;" src = "src/thumbnails/startScreen.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "src/thumbnails/viewSets.png">
     <img style = "width: 20vh; margin: 5vh;" src = "src/thumbnails/viewCards.png">
-    <img style = "width: 20vh; margin: 5vh;" src = "src/thumbnails/editCard.png">
     <img style = "width: 20vh; margin: 5vh;" src = "src/thumbnails/newCard.png">
     <img style = "width: 20vh; margin: 5vh;" src = "src/thumbnails/viewQuiz.png">
 
